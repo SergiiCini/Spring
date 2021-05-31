@@ -57,4 +57,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDAO.getOne(id);
     }
 
+    @Override
+    public Customer modify(long id, Customer customer) {
+        return customerDAO.modify(id, customer);
+    }
+
 }

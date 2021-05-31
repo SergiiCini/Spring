@@ -1,7 +1,5 @@
 package com.serhii.dao;
 
-import com.serhii.additionals.Currency;
-import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -71,5 +69,15 @@ public class CustomerDAOImpl implements CustomerDAO {
                 .filter(c -> c.getId() == id)
                 .collect(Collectors.toList());
         return currentCustomer.get(0);
+    }
+
+    @Override
+    public Customer modify(long id, Customer customer) {
+        Customer curCustomer = getOne(id);
+        curCustomer.setName(customer.getName());
+        curCustomer.setAge(customer.getAge());
+        curCustomer.setEmail(customer.getEmail());
+        log.info("Customer with id=" + id + " was successfully modifyed!");
+        return curCustomer;
     }
 }

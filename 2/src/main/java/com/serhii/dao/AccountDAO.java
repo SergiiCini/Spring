@@ -33,10 +33,9 @@ public interface AccountDAO {
 
     public boolean modifyAccounts(Customer customer, String number);
 
-//    public void topUpAccount(String number, double topUpAmount);
-    public void topUpAccount(TransactionData td);
+    public Account topUpAccount(TransactionData td);
 
-    public boolean withdrawMoney(TransactionData td);
+    public Account withdrawMoney(TransactionData td);
 
     public boolean sendMoney(TransactionData td);
 

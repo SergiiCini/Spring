@@ -67,17 +67,13 @@ public class AccountServiceImpl implements AccountService {
         return accountDAO.modifyAccounts(customer, number);
     }
 
-//    @Override
-//    public void topUpAccount(String number, double topUpAmount) {
-//        accountDAO.topUpAccount(number, topUpAmount);
-//    }
     @Override
-    public void topUpAccount(TransactionData td) {
-        accountDAO.topUpAccount(td);
+    public Account topUpAccount(TransactionData td) {
+        return accountDAO.topUpAccount(td);
     }
 
     @Override
-    public boolean withdrawMoney(TransactionData td) {
+    public Account withdrawMoney(TransactionData td) {
        return accountDAO.withdrawMoney(td);
     }
     @Override

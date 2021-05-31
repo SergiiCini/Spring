@@ -38,9 +38,9 @@ public class CustomerController {
         return customerService.save(customer);
     }
 
-    @PutMapping("/customer")
-    public Customer updateCustomer(@RequestBody Customer customer) {
-        return customerService.save(customer);
+    @PutMapping("/customer/modify/{id}")
+    public Customer updateCustomer(@PathVariable long id, @RequestBody Customer customer) {
+        return customerService.modify(id, customer);
     }
 
     @DeleteMapping("/customer/{id}")

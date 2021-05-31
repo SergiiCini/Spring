@@ -25,4 +25,6 @@ public interface CustomerService {
 
     public Customer getOne(long id);
 
+    public Customer modify(long id, Customer customer);
+
 }

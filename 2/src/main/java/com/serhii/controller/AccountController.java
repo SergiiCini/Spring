@@ -1,6 +1,8 @@
 package com.serhii.controller;
 
+import com.serhii.entity.Account;
 import com.serhii.entity.TransactionData;
+import com.serhii.exception_handling.NoSuchAccountException;
 import com.serhii.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,22 +19,24 @@ public class AccountController {
     AccountService accountService;
 
     @PutMapping("/account/top_up")
-    public String topUpAccount(@RequestBody TransactionData td) {
-        accountService.topUpAccount(td);
-        return "Account: " + td.getAccountToReceive() + " was toppedUp by " + td.getTransactionAmount();
+    public Account topUpAccount(@RequestBody TransactionData td) {
+        Account account = accountService.topUpAccount(td);
+        if (account == null)
+            throw new NoSuchAccountException("There is no such account in our Database");
+        return account;
     }
 
     @PutMapping("/account/withdraw")
-    public String withdrawMoney(@RequestBody TransactionData td) {
-        if (!accountService.withdrawMoney(td))
-            return "You don't have enough of money on your account!";
-        return "Success!";
+    public Account withdrawMoney(@RequestBody TransactionData td) {
+        Account account = accountService.withdrawMoney(td);
+        if (account == null)
+            throw new NoSuchAccountException("There is no such account in our Database");
+        return account;
     }
 
     @PutMapping("/account/send_money")
     public String sendMoney(@RequestBody TransactionData td) {
-        if (!accountService.sendMoney(td))
-            return "You don't have enough of money on your account!";
+        accountService.sendMoney(td);
         return "Success!";
     }
 }

@@ -3,12 +3,13 @@ package com.serhii.dao;
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
 import com.serhii.entity.TransactionData;
+import com.serhii.exception_handling.NoSuchAccountException;
+import com.serhii.exception_handling.OutOfBalanceException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Log4j2
@@ -28,13 +29,12 @@ public class AccountDAOImpl implements AccountDAO {
         account.setId(generateId());
         accounts.add(account);
         log.info(account + " was successfully added to DB!");
-        log.info("DB " + accounts.toString());
         return account;
     }
 
     @Override
     public boolean delete(Account account) {
-        return Optional.of(accounts.remove(account)).orElse(false);
+        return accounts.remove(account);
     }
 
     @Override
@@ -82,38 +82,40 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public boolean modifyAccounts(Customer customer, String number) {
-        Optional<List<Account>> accounts = Optional.ofNullable(customer.getAccounts());
-        Account account = accounts.get().stream()
-                .filter(a -> a.getNumber().equals(number))
-                .findFirst().get();
-        accounts.get().remove(account);
+        List<Account> accounts = customer.getAccounts();
+        Account account = accounts.stream().filter(a -> a.getNumber().equals(number)).findFirst().get();
+        if (account == null)
+            throw new NoSuchAccountException("There is no such account in our Database");
+        accounts.remove(account);
         return true;
     }
 
     @Override
-    public void topUpAccount(TransactionData td) {
-        double availableAmount = accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToReceive())).findFirst().get().getBalance();
-        accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToReceive())).findFirst().get().setBalance(availableAmount + td.getTransactionAmount());
+    public Account topUpAccount(TransactionData td) {
+        Account account = accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToReceive())).findFirst().get();
+        double availableAmount = account.getBalance();
+        account.setBalance(availableAmount + td.getTransactionAmount());
+        return account;
     }
 
     @Override
-    public boolean withdrawMoney(TransactionData td) {
-        double availableAmount = accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToWithdraw())).findFirst().get().getBalance();
-        if (availableAmount >= td.getTransactionAmount()) {
-            accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToWithdraw())).findFirst().get().setBalance(availableAmount - td.getTransactionAmount());
-            return true;
-        } else return false;
+    public Account withdrawMoney(TransactionData td) {
+        Account account = accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToWithdraw())).findFirst().get();
+        double availableAmount = account.getBalance();
+        if (availableAmount < td.getTransactionAmount())
+            throw new OutOfBalanceException("There is not enough money on your account!");
+        account.setBalance(availableAmount - td.getTransactionAmount());
+        return account;
     }
 
     @Override
     public boolean sendMoney(TransactionData td) {
         double availableAmount = accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToWithdraw())).findFirst().get().getBalance();
-        if (availableAmount >= td.getTransactionAmount()){
-            withdrawMoney(td);
-            topUpAccount(td);
-            return true;
-        }
-            return false;
+        if (availableAmount < td.getTransactionAmount())
+            throw new OutOfBalanceException("There is not enough money on your account!");
+        withdrawMoney(td);
+        topUpAccount(td);
+        return true;
     }
 
 }

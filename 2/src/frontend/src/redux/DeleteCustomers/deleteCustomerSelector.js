@@ -1,0 +1,1 @@
+export const deleteCustomerSelector = (store) => store.deleteCustomer.customerId;

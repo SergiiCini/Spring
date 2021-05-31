@@ -32,8 +32,9 @@ public interface AccountService {
 
     public boolean modifyAccounts(Customer customer, String number);
 
-    public void topUpAccount(TransactionData td);
-    public boolean withdrawMoney(TransactionData td);
+    public Account topUpAccount(TransactionData td);
+
+    public Account withdrawMoney(TransactionData td);
 
     public boolean sendMoney(TransactionData td);
 

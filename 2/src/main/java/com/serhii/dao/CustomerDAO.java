@@ -26,4 +26,6 @@ public interface CustomerDAO {
 
     public Customer getOne(long id);
 
+    public Customer modify (long id, Customer customer);
+
 }

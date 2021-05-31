@@ -1,0 +1,1 @@
+export const changeCustomerDataSelector = (store) => store.changeCustomer.customerData;
