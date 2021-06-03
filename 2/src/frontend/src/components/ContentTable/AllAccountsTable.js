@@ -9,14 +9,19 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {customerAccountsActions, deleteAccountActions} from "../../redux/CustomerAccounts/customerAccountsActions";
+import {
+    customerAccountsActions,
+    deleteAccountActions,
+    getAllAccounts
+} from "../../redux/CustomerAccounts/customerAccountsActions";
 import {allAccountsSelector, customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoneyIcon from '@material-ui/icons/Money';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import {deleteCustomerAccountActions} from "../../redux/Customer/CustomerActions";
+import {deleteCustomerAccountActions, getCustomersAction} from "../../redux/Customer/CustomerActions";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
+import {customersSelector} from "../../redux/Customer/CustomerSelectors";
 
 const useStyles = makeStyles({
     table: {
@@ -27,20 +32,22 @@ const useStyles = makeStyles({
     }
 });
 
-export default function AccountsTable() {
-    const {id} = useParams();
+export default function AllAccountsTable() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const curCustomerAccounts = useSelector(customerAccountsSelector)
+    const allAccounts = useSelector(allAccountsSelector);
+    const allCustomers = useSelector(customersSelector);
 
-    useEffect
-    (() => {
-        dispatch(customerAccountsActions(id))
-    }, [dispatch])
+    useEffect(() => {
+        dispatch(getCustomersAction())
+        dispatch(getAllAccounts())
+    }, [])
 
-    if (curCustomerAccounts.length <= 0) return <p>This customer doesn't have any accounts!</p>
-    else if (curCustomerAccounts.length > 0) {
-        const accountsData = curCustomerAccounts.map(a => renderAccounts(a.number, a.balance, a.currency, a.id))
+    if (allAccounts.length <= 0) return <p>There are no accounts yet!</p>
+
+    else if (allAccounts.length >= 1) {
+
+        const accountsData = allAccounts.map(a => renderAccounts(a.number, a.balance, a.currency, getAccountOwner(a.accountOwnerId)))
 
         return (
             <TableContainer component={Paper}>
@@ -50,9 +57,7 @@ export default function AccountsTable() {
                             <TableCell align="center" className={classes.accTable}>Account number</TableCell>
                             <TableCell align="center" className={classes.accTable}>Balance</TableCell>
                             <TableCell align="center" className={classes.accTable}>Account currency</TableCell>
-                            <TableCell align="center" className={classes.accTable}>Top-up balance</TableCell>
-                            <TableCell align="center" className={classes.accTable}>To cash</TableCell>
-                            <TableCell align="center" className={classes.accTable}>Remove account</TableCell>
+                            <TableCell align="center" className={classes.accTable}>Account owner</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -63,26 +68,23 @@ export default function AccountsTable() {
         );
     }
 
-    function renderAccounts(account, currency, balance, accId) {
+    function renderAccounts(account, currency, balance, name, id, ownerId) {
         return (
             <TableRow hover key={account}>
                 <TableCell component="th" scope="row">{account}</TableCell>
-                <TableCell align="right">{currency}</TableCell>
-                <TableCell align="right">{balance}</TableCell>
-                <TableCell align="center" ><AddCircleOutlineIcon cursor="pointer" onClick={() => dispatch(toggleModalAction("top-up", id, accId))}/></TableCell>
-                <TableCell align="center"><MoneyIcon cursor="pointer" onClick={() => dispatch(toggleModalAction("withdraw", id, accId))}/></TableCell>
-                <TableCell align="center">
-                    <IconButton aria-label="delete">
-                        <DeleteIcon onClick={() =>{
-                            dispatch(deleteAccountActions(accId));
-                            dispatch(deleteCustomerAccountActions(id, accId))
-                        }
-                        }/>
-                    </IconButton>
-                </TableCell>
+                <TableCell align="center">{currency}</TableCell>
+                <TableCell align="center">{balance}</TableCell>
+                <TableCell align="center">{name}</TableCell>
             </TableRow>
         )
     }
+
+    function getAccountOwner(ownerId) {
+        console.log("OwnerId: " + ownerId)
+        console.log("allCustomers: " + allCustomers[0].id)
+        return allCustomers.filter(c => c.id === ownerId)[0].name;
+    }
+
 }
 
 

@@ -1,13 +1,12 @@
-import React, {useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React from "react";
+import {useDispatch} from "react-redux";
 import {Formik, Field, Form} from 'formik';
 import * as Yup from 'yup';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import {TextField} from 'formik-material-ui';
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
-import {addNewCustomerActions} from "../../redux/AddNewCustomer/addNewCustomerActions";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {addNewCustomerActions} from "../../redux/Customer/CustomerActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {

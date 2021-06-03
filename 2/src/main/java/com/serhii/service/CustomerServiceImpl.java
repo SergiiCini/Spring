@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean delete(Customer customer) {
+    public Customer delete(Customer customer) {
         return customerDAO.delete(customer);
     }
 
@@ -48,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean deleteById(long id) {
+    public Customer deleteById(long id) {
         return customerDAO.deleteById(id);
     }
 
@@ -60,6 +60,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer modify(long id, Customer customer) {
         return customerDAO.modify(id, customer);
+    }
+
+    @Override
+    public Customer addAccount(long customerId, long accountId) {
+        return customerDAO.addAccount(customerId, accountId);
+    }
+
+    @Override
+    public List<Long> deleteAccount(Account account) {
+        return customerDAO.deleteAccount(account);
+    }
+
+    @Override
+    public Customer getCustomerByAccountId(long id) {
+        return customerDAO.getCustomerByAccountId(id);
     }
 
 }

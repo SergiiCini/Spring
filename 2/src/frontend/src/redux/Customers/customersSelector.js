@@ -1,1 +1,0 @@
-export const customersSelector = (store) => store.customersList.customers;

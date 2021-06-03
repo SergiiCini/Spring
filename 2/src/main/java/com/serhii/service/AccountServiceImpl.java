@@ -1,6 +1,5 @@
 package com.serhii.service;
 
-import com.serhii.additionals.Currency;
 import com.serhii.dao.AccountDAO;
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
@@ -58,13 +57,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createAccount(long id) {
-        return accountDAO.createAccount(id);
+    public Account createAccount(long id, String currency) {
+        return accountDAO.createAccount(id, currency);
     }
 
     @Override
-    public boolean modifyAccounts(Customer customer, String number) {
-        return accountDAO.modifyAccounts(customer, number);
+    public List <Account> modifyAccounts(long accountId) {
+        return accountDAO.modifyAccounts(accountId);
     }
 
     @Override
@@ -79,5 +78,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean sendMoney(TransactionData td) {
         return accountDAO.sendMoney(td);
+    }
+
+    @Override
+    public List<Account> getCustomerAccounts(long customerId) {
+        return accountDAO.getCustomerAccounts(customerId);
     }
 }

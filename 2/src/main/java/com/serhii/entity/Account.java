@@ -1,6 +1,7 @@
 package com.serhii.entity;
 
 import com.serhii.additionals.Currency;
+import com.serhii.exception_handling.NoSuchAccountException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,6 @@ public class Account {
     private Currency currency;
     private double balance = 0.0;
     private long accountOwnerId;
-//    public List<Account> accounts = new ArrayList<>();
 
     public Account(Long id, Double balance) {
         this.id = id;
@@ -47,8 +47,26 @@ public class Account {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCurrency(String currency) {
+        switch (currency) {
+            case "UAH":
+                this.currency = Currency.UAH;
+                break;
+            case "USD":
+                this.currency = Currency.USD;
+                break;
+            case "EUR":
+                this.currency = Currency.EUR;
+                break;
+            case "CHF":
+                this.currency = Currency.CHF;
+                break;
+            case "GBP":
+                this.currency = Currency.GBP;
+                break;
+            default:
+                throw new NoSuchAccountException("It's impossible to open account in this currency!");
+        }
     }
 
     public Double getBalance() {
@@ -59,7 +77,7 @@ public class Account {
         this.balance = balance;
     }
 
-    public long getAccountOwnerId() {
+    public Long getAccountOwnerId() {
         return accountOwnerId;
     }
 

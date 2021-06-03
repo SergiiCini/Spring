@@ -15,8 +15,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import AppRoutes from "../../routes/AppRoutes";
 import {useDispatch} from "react-redux";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
-import {getCustomersAction} from "../../redux/Customers/customersActions";
-import {logDOM} from "@testing-library/react";
+import {getCustomersAction} from "../../redux/Customer/CustomerActions";
 
 const styles = (theme) => ({
     paper: {
@@ -42,7 +41,7 @@ const styles = (theme) => ({
 });
 
 function Content(props) {
-    const {classes, customers} = props;
+    const {classes, customers, accounts} = props;
     const dispatch = useDispatch();
     const valueRef = useRef();
 
@@ -72,7 +71,7 @@ function Content(props) {
                         </Grid>
                         <Grid item>
                             <Button variant="contained" color="primary" className={classes.addUser}
-                            onClick={() => dispatch(toggleModalAction("new"))}>
+                            onClick={() => dispatch(toggleModalAction("new_customer"))}>
                                 Add customer
                             </Button>
                             <Tooltip title="Reload">
@@ -87,7 +86,7 @@ function Content(props) {
             {customers.length <= 0 ?
                 <div className={classes.contentWrapper}>
                     <Typography color="textSecondary" align="center">
-                        No users for this project yet
+                        No data for this project yet
                     </Typography>
                 </div> :
                 <AppRoutes customers={customers}/>}

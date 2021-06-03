@@ -1,6 +1,6 @@
 import * as actions from '../actionTypes';
 
-export const toggleModalAction = (modalType, id) => (dispatch) => dispatch ({
+export const toggleModalAction = (modalType, customerId, accountId) => (dispatch) => dispatch ({
     type: actions.TOGGLE_MODAL,
-    payload: {modalType, id}
+    payload: {modalType, customerId, accountId}
 })

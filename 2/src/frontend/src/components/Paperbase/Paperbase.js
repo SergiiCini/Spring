@@ -165,7 +165,7 @@ const styles = {
 };
 
 function Paperbase(props) {
-  const { classes, customers } = props;
+  const { classes, customers, accounts } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isModalOpen = useSelector(openModalSelector);
   const modal = isModalOpen ? <TransitionsModal /> : null;
@@ -194,7 +194,7 @@ function Paperbase(props) {
         <div className={classes.app}>
           <Header onDrawerToggle={handleDrawerToggle} />
           <main className={classes.main}>
-            <Content customers={customers} />
+            <Content customers={customers} account={accounts}/>
           </main>
           <footer className={classes.footer}>
             <Copyright />

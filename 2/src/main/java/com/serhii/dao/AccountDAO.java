@@ -29,14 +29,16 @@ public interface AccountDAO {
 
     public Account getOne(long id);
 
-    public Account createAccount(long id);
+    public Account createAccount(long id, String currency);
 
-    public boolean modifyAccounts(Customer customer, String number);
+    public List<Account> modifyAccounts(long accountId);
 
     public Account topUpAccount(TransactionData td);
 
     public Account withdrawMoney(TransactionData td);
 
     public boolean sendMoney(TransactionData td);
+
+    public List<Account> getCustomerAccounts (long customerId);
 
 }

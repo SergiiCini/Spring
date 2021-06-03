@@ -3,7 +3,8 @@ import * as actions from "../actionTypes"
 const initialStore = {
     isModalOpen: false,
     modalOpenType: null,
-    customerId: null
+    customerId: null,
+    accountId: null
 }
 
 const modalReducer = (store = initialStore, action) => {
@@ -11,20 +12,27 @@ const modalReducer = (store = initialStore, action) => {
         const {modalType} = action.payload
         return modalType;
     }
-    function destId(){
-        const {id} = action.payload
-        return id;
+    function destCustomerId(){
+        const {customerId} = action.payload
+        return customerId;
+    }
+    function destAccountId(){
+        const {accountId} = action.payload
+        return accountId;
     }
     const type = action.payload ? destType() : null;
-    const id = action.payload ? destId() : null;
-    console.log(type, id)
+    const cId = action.payload ? destCustomerId() : null;
+    const aId = action.payload ? destAccountId() : null;
+    console.log("Customer id: " + cId);
+    console.log("Account id: " + aId);
     switch (action.type){
         case actions.TOGGLE_MODAL:
             return {
                 ...store,
                 isModalOpen: !store.isModalOpen,
                 modalOpenType: type,
-                customerId: id
+                customerId: cId,
+                accountId: aId
             }
         default:
             return store

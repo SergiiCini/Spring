@@ -18,9 +18,8 @@ import {NavLink} from "react-router-dom";
 import SettingsIcon from '@material-ui/icons/Settings';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import {useDispatch} from "react-redux";
-import {deleteCustomerActions} from "../../redux/DeleteCustomers/deleteCustomerActions";
+import {deleteCustomerActions} from "../../redux/Customer/CustomerActions";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
-import {openNewAccountActions} from "../../redux/AddNewCustomer/addNewCustomerActions";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -215,7 +214,7 @@ export default function CustomersTable(props) {
                                             hover
                                             role="checkbox"
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row.name+row.email+row.age}
                                         >
                                             <TableCell padding="checkbox">
                                             </TableCell>
@@ -228,15 +227,15 @@ export default function CustomersTable(props) {
                                                 {row.accounts}
                                             </TableCell>
                                             <TableCell align="center">
-                                                <LibraryAddIcon cursor="pointer" onClick={() => dispatch(openNewAccountActions(row.id))}/>
+                                                <LibraryAddIcon cursor="pointer" onClick={() => dispatch(toggleModalAction("new_account", row.id))}/>
                                             </TableCell>
                                             <TableCell align="center">
-                                                <SettingsIcon cursor="pointer" onClick={() => dispatch(toggleModalAction("change", row.id))}/>
+                                                <SettingsIcon cursor="pointer" onClick={() => dispatch(toggleModalAction("modify_customer", row.id))}/>
                                             </TableCell>
                                             <TableCell align="center">
                                                 <IconButton aria-label="delete">
                                                     <DeleteIcon onClick={() =>
-                                                        dispatch(deleteCustomerActions(+row.id))
+                                                        dispatch(deleteCustomerActions(row.id))
                                                     }/>
                                                 </IconButton>
                                             </TableCell>

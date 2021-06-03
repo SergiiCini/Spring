@@ -1,16 +1,15 @@
 package com.serhii.dao;
 
 import com.serhii.entity.Account;
-import com.serhii.entity.Customer;
 import com.serhii.entity.TransactionData;
 import com.serhii.exception_handling.NoSuchAccountException;
 import com.serhii.exception_handling.OutOfBalanceException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -72,22 +71,25 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public Account createAccount(long id) {
+    public Account createAccount(long id, String currency) {
         Account account = new Account();
         account.setId(generateId());
         account.setAccountOwnerId(id);
+        account.setCurrency(currency);
         accounts.add(account);
+        log.info("New account: " + account);
         return account;
     }
 
     @Override
-    public boolean modifyAccounts(Customer customer, String number) {
-        List<Account> accounts = customer.getAccounts();
-        Account account = accounts.stream().filter(a -> a.getNumber().equals(number)).findFirst().get();
+    public List<Account> modifyAccounts(long accountId) {
+        Account account = accounts.stream().filter(a -> a.getId().equals(accountId)).findFirst().get();
+        long customerId = account.getAccountOwnerId();
         if (account == null)
             throw new NoSuchAccountException("There is no such account in our Database");
         accounts.remove(account);
-        return true;
+        return accounts.stream().filter(a -> a.getAccountOwnerId().equals(customerId)).collect(Collectors.toList());
+
     }
 
     @Override
@@ -116,6 +118,13 @@ public class AccountDAOImpl implements AccountDAO {
         withdrawMoney(td);
         topUpAccount(td);
         return true;
+    }
+
+    @Override
+    public List<Account> getCustomerAccounts(long customerId) {
+        return accounts.stream()
+                .filter(a -> a.getAccountOwnerId() == customerId)
+                .collect(Collectors.toList());
     }
 
 }

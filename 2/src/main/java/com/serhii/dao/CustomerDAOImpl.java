@@ -1,5 +1,6 @@
 package com.serhii.dao;
 
+import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -30,8 +31,9 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean delete(Customer customer) {
-        return Optional.of(customers.remove(customer)).orElse(false);
+    public Customer delete(Customer customer) {
+        customers.remove(customer);
+        return customer;
     }
 
     @Override
@@ -52,15 +54,11 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean deleteById(long id) {
-        if (customers.contains(getOne(id))) {
-            customers.remove(getOne(id));
-            log.info("Customer with id=" + id + " was successfully removed from DB!");
-            return true;
-        } else {
-            log.info("Customer with id=" + id + " is not exist in our DB!");
-            return false;
-        }
+    public Customer deleteById(long id) {
+        Customer customer = getOne(id);
+        customers.remove(customer);
+        log.info("Customer with id=" + id + " was successfully removed from DB!");
+        return customer;
     }
 
     @Override
@@ -79,5 +77,31 @@ public class CustomerDAOImpl implements CustomerDAO {
         curCustomer.setEmail(customer.getEmail());
         log.info("Customer with id=" + id + " was successfully modifyed!");
         return curCustomer;
+    }
+
+    @Override
+    public Customer addAccount(long customerId, long accountId) {
+        Customer customer = getOne(customerId);
+        customer.setAccounts(accountId);
+        log.info("Customer with id=" + customerId + " has got a new account!");
+        return customer;
+    }
+
+    @Override
+    public List<Long> deleteAccount(Account account) {
+        long customerId = account.getAccountOwnerId();
+        long accountId = account.getId();
+        Customer customer = customers.stream().filter(c -> c.getId() == customerId).findFirst().get();
+        customer.getAccounts().remove(accountId);
+        log.info("Customer accounts id: " + customer.getAccounts());
+        return customer.getAccounts();
+    }
+
+    @Override
+    public Customer getCustomerByAccountId(long id) {
+        Customer customer = customers.stream().filter(c -> (c.getAccounts().stream().anyMatch(a -> a == id))).findFirst().get();
+        log.info("Customer with account to delete: " + customer + ", id: " + id + " " + customer.getAccounts());
+        customer.getAccounts().remove(id);
+        return customer;
     }
 }

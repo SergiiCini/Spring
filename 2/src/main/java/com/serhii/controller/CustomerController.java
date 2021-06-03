@@ -44,24 +44,23 @@ public class CustomerController {
     }
 
     @DeleteMapping("/customer/{id}")
-    public boolean deleteCustomerById(@PathVariable long id) {
+    public Customer deleteCustomerById(@PathVariable long id) {
         return customerService.deleteById(id);
     }
 
-    @PutMapping("/customer/{id}")
-    public Customer createCustomerAccount(@PathVariable long id) {
-        Customer customer = customerService.getOne(id);
+    @PutMapping("/customer/{id}&{currency}")
+    public Customer createCustomerAccount(@PathVariable long id, @PathVariable String currency) {
+        long accountId = accountService.createAccount(id, currency).getId();
+        log.info("Account id: " + accountId);
+        Customer customer = customerService.addAccount(id, accountId);
         log.info("New account for " + customer);
-        Account account = accountService.createAccount(id);
-        System.out.println(account.toString());
-        customer.setAccounts(account);
         return customer;
     }
 
-    @DeleteMapping("/customer/modify/{id}+{number}")
-    public void deleteCustomerAccount(@PathVariable long id, @PathVariable String number) {
-        Customer customer = customerService.getOne(id);
-        accountService.modifyAccounts(customer, number);
-        log.info("Customer account: " + number + " was removed? ");
+    @DeleteMapping("/customer/modify/{id}")
+    public List<Long> deleteCustomerAccount(@PathVariable long id) {
+        Account account = accountService.getOne(id);
+        accountService.modifyAccounts(id);
+        return customerService.deleteAccount(account);
     }
 }

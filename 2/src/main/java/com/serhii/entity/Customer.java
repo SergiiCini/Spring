@@ -10,7 +10,7 @@ public class Customer {
     private String name;
     private String email;
     private Integer age;
-    private List<Account> accounts = new ArrayList<>();
+    private List<Long> accountsId = new ArrayList<>();
 
     public Customer() {
     }
@@ -54,12 +54,25 @@ public class Customer {
         this.age = age;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
+    public List<Long> getAccounts() {
+        return accountsId;
     }
 
-    public void setAccounts(Account account) {
-        accounts.add(account);
+    public void setAccounts(Long accountId) {
+        accountsId.add(accountId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return id == customer.id && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && Objects.equals(accountsId, customer.accountsId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, age, accountsId);
     }
 
     @Override
@@ -69,20 +82,7 @@ public class Customer {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", accounts=" + accounts +
+                ", accountsId=" + accountsId +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Customer)) return false;
-        Customer customer = (Customer) o;
-        return id == customer.id && name.equals(customer.name) && email.equals(customer.email) && age.equals(customer.age) && accounts.equals(customer.accounts);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, email, age, accounts);
     }
 }

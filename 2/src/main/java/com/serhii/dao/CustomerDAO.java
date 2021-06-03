@@ -14,7 +14,7 @@ public interface CustomerDAO {
 
     public Customer save(Customer customer);
 
-    public boolean delete(Customer customer);
+    public Customer delete(Customer customer);
 
     public void deleteAll(List<Customer> entities);
 
@@ -22,10 +22,16 @@ public interface CustomerDAO {
 
     public List<Customer> findAll();
 
-    public boolean deleteById(long id);
+    public Customer deleteById(long id);
 
     public Customer getOne(long id);
 
     public Customer modify (long id, Customer customer);
+
+    public Customer addAccount(long customerId, long accountId);
+
+    public List<Long> deleteAccount(Account account);
+
+    public Customer getCustomerByAccountId(long id);
 
 }

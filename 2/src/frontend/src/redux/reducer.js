@@ -1,16 +1,15 @@
 import {combineReducers} from "redux";
-import customersReducer from "./Customers/customersReducer";
 import customerAccountsReducer from "./CustomerAccounts/customerAccountsReducer";
 import modalReducer from "./ToggleModal/modalReducer";
-import addNewCustomerReducer from "./AddNewCustomer/addNewCustomerReducer";
-import deleteCustomerReducer from "./DeleteCustomers/deleteCustomerReducer";
-import changeCustomerDataReducer from "./ChangeCustomerData/changeCustomerDataReducer";
+import customerReducer from "./Customer/CustomerReducer";
+import deleteCustomerReducer from "./Customer/CustomerReducer";
+import changeCustomerDataReducer from "./Customer/CustomerReducer";
 
 const reducer = combineReducers({
-    customersList: customersReducer,
+    customersList: customerReducer,
     customerAccounts: customerAccountsReducer,
     toggleModal: modalReducer,
-    addNewCustomer: addNewCustomerReducer,
+    addNewCustomer: customerReducer,
     deleteCustomer: deleteCustomerReducer,
     changeCustomer: changeCustomerDataReducer
 })

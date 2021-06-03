@@ -1,1 +1,0 @@
-export const addNewCustomerSelector = (store) => store.addNewCustomer.newCustomerData;

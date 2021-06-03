@@ -6,9 +6,9 @@ import {makeStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import {TextField} from 'formik-material-ui';
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
-import {addNewCustomerActions} from "../../redux/AddNewCustomer/addNewCustomerActions";
 import {modalGetCustomerId} from "../../redux/ToggleModal/modalSelector";
-import {changeCustomerActions} from "../../redux/ChangeCustomerData/changeCustomerDataActions";
+import {changeCustomerActions} from "../../redux/Customer/CustomerActions";
+import {customersSelector} from "../../redux/Customer/CustomerSelectors";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,15 +38,17 @@ const ModifyCustomer = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const customerId = useSelector(modalGetCustomerId);
+    const allCustomers = useSelector(customersSelector)
+    const currentCustomer = allCustomers.filter(c => c.id === +customerId)[0];
 
     return (
         <div className='checkout'>
             <h4 align="center">{"Enter customer data you want to change"}</h4>
             <Formik
                 initialValues={{
-                    name: '',
-                    email: '',
-                    age: ''
+                    name: currentCustomer.name,
+                    email: currentCustomer.email,
+                    age: currentCustomer.age
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string("")

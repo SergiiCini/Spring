@@ -1,14 +1,16 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from '@material-ui/core/Slide';
-import {makeStyles} from '@material-ui/core/styles';
 import {useDispatch, useSelector} from "react-redux";
-import {modalGetCustomerId, modalTypeSelector, openModalSelector} from "../../redux/ToggleModal/modalSelector";
+import {modalTypeSelector, openModalSelector} from "../../redux/ToggleModal/modalSelector";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
 import AddNewCustomer from "../AddNewCustomer/AddNewCustomer";
 import ModifyCustomer from "../ModifyCustomer/ModifyCustomer";
+import AccountCurrency from "../AccountCurrency/AccountCurrency";
+import Withdraw from "../Withdraw/Withdraw";
+import TopUp from "../TopUp/TopUp";
+import SendMoney from "../SendMoney/SendMoney";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -19,7 +21,12 @@ function TransitionsModal() {
     const dispatch = useDispatch();
     const modalType = useSelector(modalTypeSelector);
 
-    const renderModal = modalType === "new" ? <AddNewCustomer/> : modalType === "change" ? <ModifyCustomer/> : null;
+    const renderModal = modalType === "new_customer" ? <AddNewCustomer/> :
+        modalType === "modify_customer" ? <ModifyCustomer/> :
+            modalType === "new_account" ? <AccountCurrency/> :
+                modalType === "withdraw" ? <Withdraw/> :
+                    modalType === "top-up" ? <TopUp/> :
+                        modalType === "send" ? <SendMoney/> : null;
 
     const handleClose = () => {
         dispatch(toggleModalAction())
