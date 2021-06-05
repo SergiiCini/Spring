@@ -6,12 +6,10 @@ import {makeStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import {TextField} from 'formik-material-ui';
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
-import {addNewCustomerActions} from "../../redux/Customer/CustomerActions";
 import {modalGetAccountId, modalGetCustomerId} from "../../redux/ToggleModal/modalSelector";
-import {allAccountsSelector, customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
+import {customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
 import {
     customerAccountsActions,
-    getAllAccounts,
     withdrawAccountActions
 } from "../../redux/CustomerAccounts/customerAccountsActions";
 
@@ -55,7 +53,7 @@ function Withdraw() {
     useEffect
     (() => {
         dispatch(customerAccountsActions(customerId))
-    }, [])
+    }, [customerId, dispatch])
     const accountBalance = curCustomerAccounts.filter(a => a.id === +accountId)[0].balance;
 
     return (

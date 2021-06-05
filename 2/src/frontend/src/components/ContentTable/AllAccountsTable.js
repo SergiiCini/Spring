@@ -7,20 +7,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    customerAccountsActions,
-    deleteAccountActions,
-    getAllAccounts
-} from "../../redux/CustomerAccounts/customerAccountsActions";
-import {allAccountsSelector, customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import MoneyIcon from '@material-ui/icons/Money';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import {deleteCustomerAccountActions, getCustomersAction} from "../../redux/Customer/CustomerActions";
-import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
+import {getAllAccounts} from "../../redux/CustomerAccounts/customerAccountsActions";
+import {allAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
+import {getCustomersAction} from "../../redux/Customer/CustomerActions";
 import {customersSelector} from "../../redux/Customer/CustomerSelectors";
 
 const useStyles = makeStyles({
@@ -80,8 +70,6 @@ export default function AllAccountsTable() {
     }
 
     function getAccountOwner(ownerId) {
-        console.log("OwnerId: " + ownerId)
-        console.log("allCustomers: " + allCustomers[0].id)
         return allCustomers.filter(c => c.id === ownerId)[0].name;
     }
 

@@ -8,7 +8,7 @@ import Link from '@material-ui/core/Link';
 import Navigator from "../Navigator/Navigator";
 import Content from "../Content/Content";
 import Header from "../Header/Header";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {openModalSelector} from "../../redux/ToggleModal/modalSelector";
 import TransitionsModal from "../Modal/TransitionsModal";
 

@@ -5,7 +5,7 @@ import Paperbase from "./components/Paperbase/Paperbase"
 import {useDispatch, useSelector} from "react-redux";
 import {customersSelector} from "./redux/Customer/CustomerSelectors";
 import {getCustomersAction} from "./redux/Customer/CustomerActions";
-import Loader from "./components/Loader/Loader";
+import Loader from "./components/Loader/CircularStatic";
 import {getAllAccounts} from "./redux/CustomerAccounts/customerAccountsActions";
 import {allAccountsSelector} from "./redux/CustomerAccounts/customerAccountsSelectors";
 
@@ -15,7 +15,6 @@ const App = () => {
     const customers = useSelector(customersSelector);
     const accounts = useSelector(allAccountsSelector);
 
-
     useEffect(() => {
         dispatch(getCustomersAction())
         dispatch(getAllAccounts())
@@ -23,7 +22,7 @@ const App = () => {
 
     return <Paperbase customers={customers} account={accounts}/>
 
-    // customers.length === 0 ? <Loader /> :
+    // customers.length === 0 ? <CircularStatic /> :
 
 }
 

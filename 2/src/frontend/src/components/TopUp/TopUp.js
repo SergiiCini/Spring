@@ -6,14 +6,9 @@ import {makeStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import {TextField} from 'formik-material-ui';
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
-import {addNewCustomerActions} from "../../redux/Customer/CustomerActions";
 import {modalGetAccountId, modalGetCustomerId} from "../../redux/ToggleModal/modalSelector";
-import {allAccountsSelector, customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
-import {
-    customerAccountsActions,
-    getAllAccounts,
-    topUpAccountActions
-} from "../../redux/CustomerAccounts/customerAccountsActions";
+import {customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
+import {customerAccountsActions, topUpAccountActions} from "../../redux/CustomerAccounts/customerAccountsActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -76,6 +71,7 @@ function TopUp() {
                         .required('Cash amount is required!'),
                 })}
                 onSubmit={(fields) => {
+                    console.log("TOP: " + fields)
                     dispatch(topUpAccountActions(fields));
                     dispatch(toggleModalAction());
                 }}

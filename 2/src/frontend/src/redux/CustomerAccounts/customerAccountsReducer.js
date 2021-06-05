@@ -35,6 +35,11 @@ const customerAccountsReducer = (store = initialStore, action) => {
                 ...store,
                 customerAcc: allCustomerAcc
             }
+        case actions.SEND_MONEY:
+            return {
+                ...store,
+                accounts: action.payload
+            }
         default:
             return store;
     }

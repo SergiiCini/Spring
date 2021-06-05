@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {customerAccountsActions, deleteAccountActions} from "../../redux/CustomerAccounts/customerAccountsActions";
-import {allAccountsSelector, customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
+import {customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoneyIcon from '@material-ui/icons/Money';

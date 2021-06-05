@@ -63,7 +63,6 @@ const ModifyCustomer = () => {
                 onSubmit={(fields) => {
                     dispatch(changeCustomerActions(customerId, fields));
                     dispatch(toggleModalAction());
-                    console.log('Customer data:',fields);
                 }}
                 render={({errors, status, touched}) => (
                     <Form className={classes.root}>

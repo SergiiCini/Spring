@@ -111,13 +111,13 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public boolean sendMoney(TransactionData td) {
+    public List<Account> sendMoney(TransactionData td) {
         double availableAmount = accounts.stream().filter(a -> a.getNumber().equals(td.getAccountToWithdraw())).findFirst().get().getBalance();
         if (availableAmount < td.getTransactionAmount())
             throw new OutOfBalanceException("There is not enough money on your account!");
         withdrawMoney(td);
         topUpAccount(td);
-        return true;
+       return accounts;
     }
 
     @Override

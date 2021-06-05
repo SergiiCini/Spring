@@ -5,8 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router";
 
-
-
 const useStyles = makeStyles((theme) => ({
     wrapper: {
         ...theme.wrapper
@@ -25,19 +23,19 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }));
-function NotFound(props) {
+function IncorrectDataRoute(props) {
     const classes = useStyles()
     const { history } = props;
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} >
             <Grid container spacing={2} className={classes.wrapper}>
                 <Grid item xs={12} className={classes.content}>
-                    <Typography variant="h1" >
-                        404
+                    <Typography variant="h2" >
+                        OOOoooppps...
                     </Typography>
                     <Typography variant="h6" >
-                        Page not found
+                        Incorrect accounts data!
                     </Typography>
                     <Button variant="contained" color="primary" className={classes.btn} onClick={history.goBack}>
                         Go back
@@ -48,4 +46,4 @@ function NotFound(props) {
     );
 }
 
-export default withRouter(NotFound);
+export default withRouter(IncorrectDataRoute);

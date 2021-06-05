@@ -23,8 +23,6 @@ const modalReducer = (store = initialStore, action) => {
     const type = action.payload ? destType() : null;
     const cId = action.payload ? destCustomerId() : null;
     const aId = action.payload ? destAccountId() : null;
-    console.log("Customer id: " + cId);
-    console.log("Account id: " + aId);
     switch (action.type){
         case actions.TOGGLE_MODAL:
             return {

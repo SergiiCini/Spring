@@ -37,7 +37,7 @@ public interface AccountDAO {
 
     public Account withdrawMoney(TransactionData td);
 
-    public boolean sendMoney(TransactionData td);
+    public List<Account> sendMoney(TransactionData td);
 
     public List<Account> getCustomerAccounts (long customerId);
 

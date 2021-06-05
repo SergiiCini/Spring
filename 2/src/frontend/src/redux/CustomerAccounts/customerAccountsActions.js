@@ -1,15 +1,17 @@
 import * as actions from '../actionTypes'
 import fetch from "unfetch";
-import {getCustomersAction} from "../Customer/CustomerActions";
-import {TOP_UP_ACCOUNT} from "../actionTypes";
+import {toggleModalAction} from "../ToggleModal/modalActions";
 
 const checkStatus = response => {
     if (response.ok) {
         return response;
     }
+    if (response.status === 406) response.statusText = "Incorrect account data! Please check sender or receiver account number!"
+    if (response.status === 405) response.statusText = "Don't enough money on Sender account! PLease check sender account balance and try again!"
     const error = new Error(response.statusText);
     error.response = response;
     return Promise.reject(error);
+
 }
 
 export const customerAccountsActions = (id) => (dispatch) => {
@@ -18,7 +20,6 @@ export const customerAccountsActions = (id) => (dispatch) => {
         .then(checkStatus)
         .then(res => res.json())
         .then(data => {
-            // let currCustomer = data.filter(c => c.id === +id)[0];
             let customerAccounts = data;
             return customerAccounts;
         })
@@ -54,7 +55,6 @@ export const deleteAccountActions = (id) => dispatch => {
         .then(res => res.json())
         .then(data => {
             let updatedAccountsList = data;
-            console.log("updated account list: " + updatedAccountsList)
             return updatedAccountsList
         })
         .then(updatedAccountsList => {
@@ -66,6 +66,7 @@ export const deleteAccountActions = (id) => dispatch => {
 }
 
 export const topUpAccountActions = (transactionData) => dispatch => {
+    console.log(transactionData)
     return fetch("/api/account/top_up", {
         method: "PUT",
         body: JSON.stringify(transactionData),
@@ -107,5 +108,28 @@ export const withdrawAccountActions = (transactionData) => dispatch => {
                 payload: withDrawAccount
             })
         })
+}
+
+export const sendMoneyActions = (transactionalData) => dispatch => {
+    return fetch("/api/account/send_money", {
+        method: "PUT",
+        body: JSON.stringify(transactionalData),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(checkStatus)
+        .then(res => res.json())
+        .then(data => {
+            let sendInfo = data;
+            return sendInfo;
+        })
+        .then(sendInfo => {
+            dispatch({
+                type: actions.SEND_MONEY,
+                payload: sendInfo
+            })
+        })
+        .then(dispatch(toggleModalAction("success")))
 }
 

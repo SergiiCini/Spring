@@ -10,7 +10,10 @@ import ModifyCustomer from "../ModifyCustomer/ModifyCustomer";
 import AccountCurrency from "../AccountCurrency/AccountCurrency";
 import Withdraw from "../Withdraw/Withdraw";
 import TopUp from "../TopUp/TopUp";
-import SendMoney from "../SendMoney/SendMoney";
+import IncorrectSenderData from "../IncorrectData/IncorrectSenderData";
+import IncorrectReceiverData from "../IncorrectData/IncorrectReceiverData";
+import IncorrectAmount from "../IncorrectData/IncorrectAmount";
+import SuccessData from "../IncorrectData/SuccessData";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -26,7 +29,10 @@ function TransitionsModal() {
             modalType === "new_account" ? <AccountCurrency/> :
                 modalType === "withdraw" ? <Withdraw/> :
                     modalType === "top-up" ? <TopUp/> :
-                        modalType === "send" ? <SendMoney/> : null;
+                        modalType === "senderIncorrect" ? <IncorrectSenderData/> :
+                            modalType === "receiverIncorrect" ? <IncorrectReceiverData/> :
+                                modalType === "incorrectAmount" ? <IncorrectAmount/> :
+                                    modalType === "success" ? <SuccessData/> : null;
 
     const handleClose = () => {
         dispatch(toggleModalAction())

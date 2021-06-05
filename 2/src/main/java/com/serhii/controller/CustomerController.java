@@ -2,6 +2,8 @@ package com.serhii.controller;
 
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
+import com.serhii.exception_handling.NoSuchAccountException;
+import com.serhii.exception_handling.NoSuchCustomerException;
 import com.serhii.service.AccountService;
 import com.serhii.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +27,18 @@ public class CustomerController {
 
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable long id) {
-        return customerService.getOne(id);
+        Customer customer = customerService.getOne(id);
+        if(customer == null)
+            throw new NoSuchCustomerException("There is no such customer in Database");
+        return customer;
     }
 
     @GetMapping("/customer")
     public List<Customer> getAllCustomers() {
-        return customerService.findAll();
+        List<Customer> customers = customerService.findAll();
+        if(customers == null)
+            throw new NoSuchCustomerException("There is no customers in Database");
+        return customers;
     }
 
     @PostMapping("/customer")
@@ -40,12 +48,18 @@ public class CustomerController {
 
     @PutMapping("/customer/modify/{id}")
     public Customer updateCustomer(@PathVariable long id, @RequestBody Customer customer) {
-        return customerService.modify(id, customer);
+        Customer customerToModify = customerService.modify(id, customer);
+        if(customerToModify == null)
+            throw new NoSuchCustomerException("There is no such customer to modify in Database");
+        return customerToModify;
     }
 
     @DeleteMapping("/customer/{id}")
     public Customer deleteCustomerById(@PathVariable long id) {
-        return customerService.deleteById(id);
+        Customer customer = customerService.deleteById(id);
+        if(customer == null)
+            throw new NoSuchCustomerException("There is no such customer to delete in Database");
+        return customer;
     }
 
     @PutMapping("/customer/{id}&{currency}")

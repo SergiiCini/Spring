@@ -76,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
        return accountDAO.withdrawMoney(td);
     }
     @Override
-    public boolean sendMoney(TransactionData td) {
+    public List<Account> sendMoney(TransactionData td) {
         return accountDAO.sendMoney(td);
     }
 

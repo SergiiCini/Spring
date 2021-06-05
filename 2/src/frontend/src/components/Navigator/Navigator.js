@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {makeStyles} from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -88,7 +87,7 @@ function Navigator(props) {
       children: [
         { id: <NavLink className={classes.itemPrimary} to="/">Customers</NavLink>, icon: <PeopleIcon />, active: true },
         { id: <NavLink className={classes.itemPrimary} to="/accounts">Accounts</NavLink>, icon: <AccountBalanceWalletIcon /> },
-        { id: 'Send money', icon: <SendIcon /> },
+        { id: <NavLink className={classes.itemPrimary} to="/sendmoney">Send money</NavLink>, icon: <SendIcon /> },
       ],
     },
   ];
