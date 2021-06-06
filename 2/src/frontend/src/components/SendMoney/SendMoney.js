@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
         width: 350,
     }
 }))
-let inputsData;
 
 function SendMoney() {
     const classes = useStyles();
