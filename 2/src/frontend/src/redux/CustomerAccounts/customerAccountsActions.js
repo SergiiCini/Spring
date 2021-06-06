@@ -122,6 +122,7 @@ export const sendMoneyActions = (transactionalData) => dispatch => {
         .then(res => res.json())
         .then(data => {
             let sendInfo = data;
+            if(data) dispatch(toggleModalAction("success"))
             return sendInfo;
         })
         .then(sendInfo => {
@@ -130,6 +131,5 @@ export const sendMoneyActions = (transactionalData) => dispatch => {
                 payload: sendInfo
             })
         })
-        .then(dispatch(toggleModalAction("success")))
 }
 
