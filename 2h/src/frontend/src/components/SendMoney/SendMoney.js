@@ -50,7 +50,7 @@ function SendMoney() {
     useEffect
     (() => {
         dispatch(getAllAccounts())
-    }, [])
+    }, [dispatch])
 
     return (
         <div className={classes.main}>

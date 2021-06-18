@@ -1,22 +1,16 @@
 import React, {useEffect} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Formik, Field, Form} from 'formik';
 import * as Yup from 'yup';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import {TextField} from 'formik-material-ui';
-import {getAllAccounts, sendMoneyActions} from "../../redux/CustomerAccounts/customerAccountsActions";
+import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
+import {modalGetAccountId, modalGetCustomerId} from "../../redux/ToggleModal/modalSelector";
+import {customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
+import {customerAccountsActions, topUpAccountActions} from "../../redux/CustomerAccounts/customerAccountsActions";
 
 const useStyles = makeStyles((theme) => ({
-    main: {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center"
-    },
-    heading: {
-        marginTop: 50,
-    },
     root: {
         width: 400,
         height: 370,
@@ -43,59 +37,62 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function SendMoney() {
+function TopUp() {
+
     const classes = useStyles();
     const dispatch = useDispatch();
+    const accountId = useSelector(modalGetAccountId);
+    const customerId = useSelector(modalGetCustomerId);
+    const curCustomerAccounts = useSelector(customerAccountsSelector);
+    const currAccountNumber = curCustomerAccounts.filter(a => a.id === +accountId)[0].number;
+    const currAccountCurrency = curCustomerAccounts.filter(a => a.id === +accountId)[0].currency;
 
     useEffect
     (() => {
-        dispatch(getAllAccounts())
-    }, [])
+        dispatch(customerAccountsActions(customerId))
+    }, [dispatch, customerId])
 
     return (
-        <div className={classes.main}>
-            <h3 className={classes.heading}
-                align="center">{"Please enter the sender, receiver accounts and amount you want to send"}</h3>
+        <div className='checkout'>
+            <h4 align="center">{"Please enter amount to TOP UP account"}</h4>
             <Formik
                 initialValues={{
-                    accountToWithdraw: '',
-                    accountToReceive: '',
+                    accountToReceive: currAccountNumber,
+                    currency: currAccountCurrency,
                     transactionAmount: ''
                 }}
                 validationSchema={Yup.object().shape({
-                    accountToWithdraw: Yup.string()
-                        .required('Sender account is required'),
                     accountToReceive: Yup.string()
-                        .required('Receiver account is required'),
+                        .required('Cash amount is required!'),
+                    currency: Yup.string()
+                        .required('Currency is required!'),
                     transactionAmount: Yup.number()
                         .moreThan(0, 'Cash amount should be positive!')
                         .required('Cash amount is required!'),
                 })}
-                onSubmit={(fields, {resetForm}) => {
-                    dispatch(sendMoneyActions(fields));
-                    resetForm();
+                onSubmit={(fields) => {
+                    console.log("TOP: " + fields)
+                    dispatch(topUpAccountActions(fields));
+                    dispatch(toggleModalAction());
                 }}
                 render={({errors, status, touched}) => (
                     <Form align="center" className={classes.root}>
                         <div align="center" className={classes.form}>
-                            <Field className={classes.field_data} component={TextField} id="standard-basic"
-                                   label="Account to send" helperText="Account To Send" name="accountToWithdraw"
-                                   type="text"/>
+                            <Field className={classes.field_data} component={TextField} disabled id="standard-basic"
+                                   helperText="Account To Receive" name="accountToReceive" type="text"/>
                         </div>
                         <div align="center" className={classes.form}>
-                            <Field className={classes.field_data} component={TextField} id="standard-basic"
-                                   label="Account to receive" helperText="Account To Receive" name="accountToReceive"
-                                   type="text"/>
+                            <Field className={classes.field_data} component={TextField} disabled id="standard-basic"
+                                   helperText="Account currency" name="currency" type="text"/>
                         </div>
                         <div align="center" className={classes.form}>
-                            <Field className={classes.field_data} component={TextField} id="standard-basic"
-                                   label="Transaction Amount"
-                                   helperText="Amount to send" name="transactionAmount" type="text"/>
+                            <Field className={classes.field_data} component={TextField} id="standard-basic" label="Transaction Amount"
+                                   helperText="Top up amount" name="transactionAmount" type="text"/>
                         </div>
                         <div className={classes.buttons_form}>
                             <div className={classes.button_distance_left}>
                                 <Button variant="contained" color="primary" type="submit"
-                                        className="btn btn-primary mr-2">Send</Button>
+                                        className="btn btn-primary mr-2">TOP UP</Button>
                             </div>
                             <div>
                                 <Button variant="contained" color="primary" type="reset"
@@ -109,5 +106,4 @@ function SendMoney() {
     )
 }
 
-
-export default SendMoney
+export default TopUp
