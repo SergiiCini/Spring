@@ -34,7 +34,7 @@ function NotFound(props) {
             <Grid container spacing={2} className={classes.wrapper}>
                 <Grid item xs={12} className={classes.content}>
                     <Typography variant="h1" >
-                        404
+                            404
                     </Typography>
                     <Typography variant="h6" >
                         Page not found

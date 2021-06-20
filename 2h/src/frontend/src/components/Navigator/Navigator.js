@@ -14,6 +14,7 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import SendIcon from '@material-ui/icons/Send';
 import BusinessIcon from '@material-ui/icons/Business';
 import {Link, NavLink} from "react-router-dom";
+import logo from "../Navigator/bank.png"
 
 const styles = (theme) => ({
   categoryHeader: {
@@ -30,6 +31,11 @@ const styles = (theme) => ({
     '&:hover,&:focus': {
       backgroundColor: 'rgba(255, 255, 255, 0.08)',
     },
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    marginRight: 20,
   },
   itemCategory: {
     backgroundColor: '#232f3e',
@@ -99,7 +105,8 @@ function Navigator(props) {
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem className={clsx(classes.firebase, classes.item, classes.itemCategory)}>
-          ClientBank
+          <img className={classes.logo} src={logo}/>
+          <h3>ClientBank</h3>
         </ListItem>
         <ListItem className={clsx(classes.item, classes.itemCategory)}>
           <ListItemIcon className={classes.itemIcon}>
