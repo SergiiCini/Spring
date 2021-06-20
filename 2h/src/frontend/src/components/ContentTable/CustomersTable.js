@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {NavLink} from "react-router-dom";
 import SettingsIcon from '@material-ui/icons/Settings';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import {useDispatch} from "react-redux";
 import {deleteCustomerActions} from "../../redux/Customer/CustomerActions";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
@@ -51,8 +52,10 @@ const headCells = [
     {id: 'name', numeric: false, disablePadding: true, label: 'Name'},
     {id: 'email', numeric: false, disablePadding: false, label: 'Email'},
     {id: 'age', numeric: false, disablePadding: false, label: 'Age'},
+    {id: 'employer', numeric: false, disablePadding: false, label: 'Employer'},
     {id: 'accounts', numeric: false, disablePadding: false, label: 'Accounts'},
     {id: 'newAccount', numeric: false, disablePadding: false, label: 'Open account'},
+    {id: 'newEmployer', numeric: false, disablePadding: false, label: 'Add employer'},
     {id: 'settings', numeric: false, disablePadding: false, label: 'Modify customer'},
     {id: 'delete', numeric: false, disablePadding: false, label: 'Delete customer'},
 ];
@@ -138,6 +141,9 @@ const useStyles = makeStyles((theme) => ({
     tableHead: {
         textAlign: "center",
         fontWeight: "bold",
+    },
+    icon: {
+        maxWidth: 50
     }
 }));
 
@@ -157,8 +163,8 @@ export default function CustomersTable(props) {
         return accounts.filter(a => a.accountOwnerId === id)
     }
 
-    function createData(id, name, email, age, accounts) {
-        return {id, name, email, age, accounts};
+    function createData(id, name, email, age, employer, accounts) {
+        return {id, name, email, age, employer, accounts};
     }
 
     const rows = [];
@@ -166,8 +172,10 @@ export default function CustomersTable(props) {
     customers.map(c => {
         return rows.push(createData(
             c.id, c.name, c.email, c.age,
-            <NavLink id={c.id + c.name} className={classes.title} to={`/accounts/${c.id}`}
-                     refresh="true">{getUserAccounts(c.id).length}</NavLink>,
+            <NavLink key={c.id + c.name} className={classes.title} to={`/employers/${c.id}`}
+                                                   refresh="true">View</NavLink>,
+            <NavLink key={c.id + c.name + c.age} className={classes.title} to={`/accounts/${c.id}`}
+                     refresh="true">{getUserAccounts(c.id).length}</NavLink>
         ))
     })
 
@@ -228,18 +236,23 @@ export default function CustomersTable(props) {
                                             </TableCell>
                                             <TableCell align="center">{row.email}</TableCell>
                                             <TableCell align="center">{row.age}</TableCell>
+                                            <TableCell align="center">{row.employer}</TableCell>
                                             <TableCell align="center">
                                                 {row.accounts}
                                             </TableCell>
-                                            <TableCell align="center">
+                                            <TableCell className={classes.icon} align="center">
                                                 <LibraryAddIcon cursor="pointer"
                                                                 onClick={() => dispatch(toggleModalAction("new_account", row.id))}/>
                                             </TableCell>
-                                            <TableCell align="center">
+                                            <TableCell className={classes.icon} align="center">
+                                                <BusinessCenterIcon cursor="pointer"
+                                                                    onClick={() => dispatch(toggleModalAction("new_employer", row.id))}/>
+                                            </TableCell>
+                                            <TableCell className={classes.icon} align="center">
                                                 <SettingsIcon cursor="pointer"
                                                               onClick={() => dispatch(toggleModalAction("modify_customer", row.id))}/>
                                             </TableCell>
-                                            <TableCell align="center">
+                                            <TableCell className={classes.icon} align="center">
                                                 <IconButton aria-label="delete">
                                                     <DeleteIcon onClick={() =>
                                                         dispatch(deleteCustomerActions(row.id))

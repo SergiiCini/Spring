@@ -19,7 +19,7 @@ import {getCustomersAction} from "../../redux/Customer/CustomerActions";
 
 const styles = (theme) => ({
     paper: {
-        maxWidth: 936,
+        maxWidth: 1200,
         margin: 'auto',
         overflow: 'hidden',
     },
@@ -61,7 +61,7 @@ function Content(props) {
                             <TextField
                                 inputRef={valueRef}
                                 fullWidth
-                                placeholder="Search by name or email"
+                                placeholder="Search by ..."
                                 InputProps={{
                                     disableUnderline: true,
                                     className: classes.searchInput,

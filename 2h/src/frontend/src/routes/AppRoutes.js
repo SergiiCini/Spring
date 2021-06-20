@@ -6,6 +6,7 @@ import AccountsTable from "../components/ContentTable/AccountsTable";
 import AllAccountsTable from "../components/ContentTable/AllAccountsTable";
 import SendMoney from "../components/SendMoney/SendMoney";
 import IncorrectDataRoute from "./IncorrectDataRoute";
+import EmployerTable from "../components/ContentTable/EmployerTable";
 
 const AppRoutes = (props) => {
     const {customers, accounts} = props;
@@ -17,6 +18,8 @@ const AppRoutes = (props) => {
             <Route exact path="/accounts/:id/" render={() => <AccountsTable/>}/>
             <Route exact path="/accounts" render={() => <AllAccountsTable/>}/>
             <Route exact path="/sendmoney" render={() => <SendMoney/>}/>
+            <Route exact path="/employers" render={() => <EmployerTable/>}/>
+            <Route exact path="/employers/:id/" render={() => <EmployerTable/>}/>
             <Route exact path="/incorrectAccountData" render={() => <IncorrectDataRoute/>}/>
             <Route exact path="*" component={NotFound}/>
         </Switch>

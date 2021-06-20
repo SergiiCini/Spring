@@ -2,6 +2,7 @@ package com.serhii.service;
 
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
+import com.serhii.entity.Employer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +11,6 @@ import java.util.List;
 public interface CustomerService {
 
     public Customer save(Customer customer);
-
-//    public Customer delete(Customer customer);
-
-//    public void deleteAll(List<Customer> entities);
-//
-//    public void saveAll(List<Customer> entities);
 
     public List<Customer> findAll();
 
@@ -27,9 +22,5 @@ public interface CustomerService {
 
     public Customer addAccount(long customerId, Account account);
 
-    public List<Account> deleteAccount(Account account);
-
-    public Customer getCustomerByAccountId(long id);
-
-
+    public Customer addEmployer(long customerId, Employer employer);
 }

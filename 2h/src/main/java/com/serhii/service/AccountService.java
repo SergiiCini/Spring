@@ -13,19 +13,13 @@ public interface AccountService {
 
     public void delete(Account account);
 
-//    public void deleteAll(List<Account> entities);
-//
-//    public void saveAll(List<Account> entities);
-
     public List<Account> findAll();
 
-    public void deleteById(long id);
+    public void deleteById(Long id);
 
     public Account getOne(long id);
 
     public Account createAccount(long id, String currency);
-
-    public List <Account> modifyAccounts(long accountId);
 
     public Account topUpAccount(TransactionData td);
 
@@ -33,6 +27,6 @@ public interface AccountService {
 
     public List<Account> sendMoney(TransactionData td);
 
-    public List<Account> getCustomerAccounts (long customerId);
+    public List<Account> getCustomerAccounts(long customerId);
 
 }

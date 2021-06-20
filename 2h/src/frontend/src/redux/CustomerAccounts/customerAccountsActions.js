@@ -66,7 +66,6 @@ export const deleteAccountActions = (id) => dispatch => {
 }
 
 export const topUpAccountActions = (transactionData) => dispatch => {
-    console.log(transactionData)
     return fetch("/api/account/top_up", {
         method: "PUT",
         body: JSON.stringify(transactionData),

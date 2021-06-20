@@ -3,7 +3,7 @@ import fetch from "unfetch";
 import {getAllAccounts} from "../CustomerAccounts/customerAccountsActions";
 
 const checkStatus = response => {
-        if (response.ok) {
+    if (response.ok) {
         return response;
     }
     const error = new Error(response.statusText);
@@ -27,7 +27,7 @@ export const getCustomersAction = () => (dispatch) =>
         })
 
 export const addNewCustomerActions = (newCustomerData) => (dispatch) => {
-     return fetch("/api/customer", {
+    return fetch("/api/customer", {
         method: "POST",
         body: JSON.stringify(newCustomerData),
         headers: {
@@ -47,25 +47,6 @@ export const addNewCustomerActions = (newCustomerData) => (dispatch) => {
             })
         })
 }
-
-// export const openNewAccountActions = (id, currency) => dispatch => {
-//     const url = "/api/customer/" + id + "&" + currency;
-//     return fetch(url, {
-//         method: "PUT",
-//     })
-//         .then(checkStatus)
-//         .then(res => res.json())
-//         .then(data => {
-//             let customerWithNewAcc = data;
-//             return customerWithNewAcc;
-//         })
-//         .then(customerWithNewAcc => {
-//             dispatch({
-//                 type: actions.OPEN_ACCOUNT,
-//                 payload: customerWithNewAcc
-//             })
-//         })
-// }
 
 export const changeCustomerActions = (id, customerData) => (dispatch) => {
     const url = "/api/customer/modify/" + id;
@@ -110,11 +91,10 @@ export const deleteCustomerActions = (custId) => dispatch => {
         .then(() => dispatch(getAllAccounts()))
 }
 
-export const deleteCustomerAccountActions = (customerId, accountId) => dispatch =>{
+export const deleteCustomerAccountActions = (customerId, accountId) => dispatch => {
     dispatch({
         type: actions.DELETE_CUSTOMER_ACCOUNT,
         payload: {customerId, accountId}
     })
 }
-
 

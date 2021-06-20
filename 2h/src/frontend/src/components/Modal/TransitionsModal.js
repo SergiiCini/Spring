@@ -14,6 +14,7 @@ import IncorrectSenderData from "../IncorrectData/IncorrectSenderData";
 import IncorrectReceiverData from "../IncorrectData/IncorrectReceiverData";
 import IncorrectAmount from "../IncorrectData/IncorrectAmount";
 import SuccessData from "../IncorrectData/SuccessData";
+import AddNewEmployer from "../AddNewEmployer/AddNewEmployer";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -32,7 +33,8 @@ function TransitionsModal() {
                         modalType === "senderIncorrect" ? <IncorrectSenderData/> :
                             modalType === "receiverIncorrect" ? <IncorrectReceiverData/> :
                                 modalType === "incorrectAmount" ? <IncorrectAmount/> :
-                                    modalType === "success" ? <SuccessData/> : null;
+                                    modalType === "success" ? <SuccessData/> :
+                                        modalType === "new_employer" ? <AddNewEmployer/> : null;
 
     const handleClose = () => {
         dispatch(toggleModalAction())

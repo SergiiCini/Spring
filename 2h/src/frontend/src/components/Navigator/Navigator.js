@@ -12,6 +12,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import PeopleIcon from '@material-ui/icons/People';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import SendIcon from '@material-ui/icons/Send';
+import BusinessIcon from '@material-ui/icons/Business';
 import {Link, NavLink} from "react-router-dom";
 
 const styles = (theme) => ({
@@ -46,7 +47,7 @@ const styles = (theme) => ({
   itemPrimary: {
     fontSize: 'inherit',
     textDecoration: 'none',
-    '&:active, &:visited': {
+    '&:active, &:link, &:visited': {
       color: 'rgba(255, 255, 255, 0.7)',
     },
     '&:hover': {
@@ -88,6 +89,7 @@ function Navigator(props) {
         { id: <NavLink className={classes.itemPrimary} to="/">Customers</NavLink>, icon: <PeopleIcon />, active: true },
         { id: <NavLink className={classes.itemPrimary} to="/accounts">Accounts</NavLink>, icon: <AccountBalanceWalletIcon /> },
         { id: <NavLink className={classes.itemPrimary} to="/sendmoney">Send money</NavLink>, icon: <SendIcon /> },
+        { id: <NavLink className={classes.itemPrimary} to="/employers">Employers</NavLink>, icon: <BusinessIcon /> },
       ],
     },
   ];

@@ -11,4 +11,8 @@ export const GET_ACCOUNTS = 'GET_ACCOUNTS';
 export const TOP_UP_ACCOUNT = 'TOP_UP_ACCOUNT';
 export const WITHDRAW_ACCOUNT = 'WITHDRAW_ACCOUNT';
 export const SEND_MONEY = 'SEND_MONEY';
+export const ADD_NEW_EMPLOYER = 'ADD_NEW_EMPLOYER';
+export const GET_EMPLOYERS = 'GET_EMPLOYERS';
+export const DELETE_EMPLOYER_BY_ID = 'GET_EMPLOYERS';
+
 

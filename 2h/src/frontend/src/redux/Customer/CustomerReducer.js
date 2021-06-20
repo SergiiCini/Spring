@@ -18,14 +18,6 @@ const customerReducer = (store = initialStore, action) => {
                 ...store,
                 customers: currentCustomers,
             }
-        // case actions.OPEN_ACCOUNT:
-        //     const currentCustomersData = [...store.customers];
-        //     const currCustomer = action.payload;
-        //     currentCustomersData.filter(c => c.id === currCustomer.id)[0].accounts = currCustomer.accounts;
-        //     return {
-        //         ...store,
-        //         customers: currentCustomersData
-        //     }
         case actions.CHANGE_CUSTOMER_DATA:
             const {id, modifyedCustomer} = action.payload;
             const changeCustomersStore = [...store.customers];

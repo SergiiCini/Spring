@@ -22,11 +22,14 @@ public class Customer extends AbstractEntity {
     @Column(name = "c_age")
     private Integer age;
 
-//    @JsonManagedReference
     @OneToMany(mappedBy = "customer",
             orphanRemoval = true,
             cascade = CascadeType.ALL)
     private List<Account> accounts = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "customers",
+            cascade = CascadeType.ALL)
+    private List<Employer> employers = new ArrayList<>();
 
     public Customer() {
     }
@@ -44,12 +47,17 @@ public class Customer extends AbstractEntity {
             account.setCustomer(this);
         }
     }
-//    public void removeAccount(Account account) {
-//        if (this.accounts.contains(account)) {
-//            this.accounts.remove(account);
-//            account.setCustomer(null);
-//        }
-//    }
+
+    public void addEmployer(Employer employer){
+        if(!this.employers.contains(employer))
+        employers.add(employer);
+        employer.getCustomers().add(this);
+    }
+
+    public void removeEmployer(Employer employer){
+        employers.remove(employer);
+        employer.getCustomers().remove(this);
+    }
 
     public Long getId() {
         return id;
@@ -89,6 +97,14 @@ public class Customer extends AbstractEntity {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public List<Employer> getEmployers() {
+        return employers;
+    }
+
+    public void setEmployers(List<Employer> employers) {
+        this.employers = employers;
     }
 
     @Override

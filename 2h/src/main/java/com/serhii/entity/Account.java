@@ -25,10 +25,6 @@ public class Account extends AbstractEntity {
 
     @JsonIgnore
     @ManyToOne
-//    @JoinColumn(
-//            name = "customer_id",
-//            nullable = false,
-//            referencedColumnName = "id")
     @JoinTable(name = "acc_owners",
             joinColumns = {@JoinColumn(name = "acc_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "customer_id", referencedColumnName = "id")}

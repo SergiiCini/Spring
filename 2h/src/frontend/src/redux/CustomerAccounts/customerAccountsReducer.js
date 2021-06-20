@@ -19,7 +19,7 @@ const customerAccountsReducer = (store = initialStore, action) => {
         case actions.DELETE_ACCOUNT:
             return {
                 ...store,
-                customerAcc: action.payload
+                accounts: action.payload,
             }
         case actions.TOP_UP_ACCOUNT:
             const allCustomerAccounts = [...store.customerAcc];

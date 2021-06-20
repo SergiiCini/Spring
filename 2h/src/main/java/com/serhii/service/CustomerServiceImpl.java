@@ -1,8 +1,8 @@
 package com.serhii.service;
 
-import com.serhii.dao.CustomerDAO;
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
+import com.serhii.entity.Employer;
 import com.serhii.exception_handling.NoSuchCustomerException;
 import com.serhii.repository.AccountRepository;
 import com.serhii.repository.CustomerRepository;
@@ -18,9 +18,8 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
-    private CustomerDAO customerDAO;
-    @Autowired
     private final AccountRepository accountRepository;
+
     @Autowired
     private final CustomerRepository customerRepository;
 
@@ -28,21 +27,6 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer save(Customer customer) {
         return customerRepository.save(customer);
     }
-
-//    @Override
-//    public Customer delete(Customer customer) {
-//        return customerDAO.delete(customer);
-//    }
-
-//    @Override
-//    public void deleteAll(List<Customer> entities) {
-//        customerRepository.deleteAll();
-//    }
-//
-//    @Override
-//    public void saveAll(List<Customer> entities) {
-//        customerDAO.saveAll(entities);
-//    }
 
     @Override
     public List<Customer> findAll() {
@@ -88,13 +72,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Account> deleteAccount(Account account) {
-        return customerDAO.deleteAccount(account);
+    public Customer addEmployer(long customerId, Employer employer) {
+        Optional <Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()){
+            customer.get().addEmployer(employer);
+            customerRepository.save(customer.get());
+        } else throw new NoSuchCustomerException("No customer with id: " + customerId);
+        return customer.get();
     }
 
-    @Override
-    public Customer getCustomerByAccountId(long id) {
-        return customerDAO.getCustomerByAccountId(id);
-    }
 
 }

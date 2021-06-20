@@ -71,7 +71,6 @@ function TopUp() {
                         .required('Cash amount is required!'),
                 })}
                 onSubmit={(fields) => {
-                    console.log("TOP: " + fields)
                     dispatch(topUpAccountActions(fields));
                     dispatch(toggleModalAction());
                 }}

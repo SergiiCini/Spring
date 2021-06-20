@@ -2,18 +2,17 @@ package com.serhii.controller;
 
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
-import com.serhii.exception_handling.NoSuchAccountException;
+import com.serhii.entity.Employer;
 import com.serhii.exception_handling.NoSuchCustomerException;
-import com.serhii.repository.AccountRepository;
 import com.serhii.service.AccountService;
 import com.serhii.service.CustomerService;
+import com.serhii.service.EmployerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j2
 @RequestMapping("/api")
@@ -27,11 +26,7 @@ public class CustomerController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private AccountRepository customerRepository;
+    private EmployerService employerService;
 
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable long id) {
@@ -74,10 +69,13 @@ public class CustomerController {
         return allCustomerAccounts;
     }
 
-//    @DeleteMapping("/customer/modify/{id}")
-//    public List<Account> deleteCustomerAccount(@PathVariable long id) {
-//        Account account = accountService.getOne(id);
-//        accountService.modifyAccounts(id);
-//        return customerService.deleteAccount(account);
-//    }
+    @PostMapping("/customer/new_employer_{id}")
+    public List<Employer> addNewEmployer(@PathVariable long id, @RequestBody Employer employer) {
+        customerService.addEmployer(id, employer);
+        log.info("Employer: " + employer + " was successfully added to DB!");
+        Customer customer = customerService.getOne(id);
+        List<Employer> allCustomerEmployers = customer.getEmployers();
+        log.info("Customer accounts: " + allCustomerEmployers);
+        return allCustomerEmployers;
+    }
 }

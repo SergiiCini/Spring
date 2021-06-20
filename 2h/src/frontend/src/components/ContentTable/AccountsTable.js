@@ -9,8 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {customerAccountsActions, deleteAccountActions} from "../../redux/CustomerAccounts/customerAccountsActions";
-import {customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
+import {
+    customerAccountsActions,
+    deleteAccountActions,
+} from "../../redux/CustomerAccounts/customerAccountsActions";
+import {allAccountsSelector, customerAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoneyIcon from '@material-ui/icons/Money';
@@ -32,11 +35,12 @@ export default function AccountsTable() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const curCustomerAccounts = useSelector(customerAccountsSelector)
+    const accounts = useSelector(allAccountsSelector)
 
     useEffect
     (() => {
-        dispatch(customerAccountsActions(id))
-    }, [dispatch, id])
+        dispatch(customerAccountsActions(id));
+    }, [dispatch, id, accounts])
 
     if (curCustomerAccounts.length <= 0) return <p>This customer doesn't have any accounts!</p>
     else if (curCustomerAccounts.length > 0) {
@@ -69,11 +73,13 @@ export default function AccountsTable() {
                 <TableCell component="th" scope="row">{account}</TableCell>
                 <TableCell align="right">{currency}</TableCell>
                 <TableCell align="right">{balance}</TableCell>
-                <TableCell align="center" ><AddCircleOutlineIcon cursor="pointer" onClick={() => dispatch(toggleModalAction("top-up", id, accId))}/></TableCell>
-                <TableCell align="center"><MoneyIcon cursor="pointer" onClick={() => dispatch(toggleModalAction("withdraw", id, accId))}/></TableCell>
+                <TableCell align="center"><AddCircleOutlineIcon cursor="pointer"
+                                                                onClick={() => dispatch(toggleModalAction("top-up", id, accId))}/></TableCell>
+                <TableCell align="center"><MoneyIcon cursor="pointer"
+                                                     onClick={() => dispatch(toggleModalAction("withdraw", id, accId))}/></TableCell>
                 <TableCell align="center">
                     <IconButton aria-label="delete">
-                        <DeleteIcon onClick={() =>{
+                        <DeleteIcon onClick={() => {
                             dispatch(deleteAccountActions(accId));
                             dispatch(deleteCustomerAccountActions(id, accId))
                         }
