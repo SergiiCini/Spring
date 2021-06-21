@@ -98,3 +98,10 @@ export const deleteCustomerAccountActions = (customerId, accountId) => dispatch 
     })
 }
 
+export const findByNameActions = (inputData) => dispatch => {
+    dispatch({
+        type: actions.FIND_CUSTOMER_BY_NAME,
+        payload: inputData
+    })
+}
+

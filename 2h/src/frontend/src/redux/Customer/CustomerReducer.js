@@ -1,7 +1,8 @@
 import * as actions from '../actionTypes'
 
 const initialStore = {
-    customers: []
+    customers: [],
+    filteredCustomers: []
 }
 
 const customerReducer = (store = initialStore, action) => {
@@ -10,6 +11,7 @@ const customerReducer = (store = initialStore, action) => {
             return {
                 ...store,
                 customers: action.payload,
+                filteredCustomers: action.payload
             }
         case actions.ADD_NEW_CUSTOMER:
             const currentCustomers = [...store.customers];
@@ -17,6 +19,7 @@ const customerReducer = (store = initialStore, action) => {
             return {
                 ...store,
                 customers: currentCustomers,
+                filteredCustomers: currentCustomers
             }
         case actions.CHANGE_CUSTOMER_DATA:
             const {id, modifyedCustomer} = action.payload;
@@ -35,6 +38,7 @@ const customerReducer = (store = initialStore, action) => {
             return {
                 ...store,
                 customers: newCustomersArr,
+                filteredCustomers: newCustomersArr
             }
         case actions.DELETE_CUSTOMER_ACCOUNT:
             const customersData = [...store.customers];
@@ -45,6 +49,19 @@ const customerReducer = (store = initialStore, action) => {
             return {
                 ...store,
                 customers: customersData
+            }
+        case actions.FIND_CUSTOMER_BY_NAME:
+            const customersToMod = [...store.customers];
+            let customerToFind;
+            let {inputData} = action.payload
+            if (inputData !== "") {
+                customerToFind = customersToMod.filter(c => {
+                    return (c.name.indexOf(action.payload) !== -1 || c.email.indexOf(action.payload) !== -1)
+                })
+            }
+            return {
+                ...store,
+                filteredCustomers: customerToFind
             }
         default:
             return store

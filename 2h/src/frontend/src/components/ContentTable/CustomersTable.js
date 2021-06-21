@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,9 +18,18 @@ import {NavLink} from "react-router-dom";
 import SettingsIcon from '@material-ui/icons/Settings';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import {useDispatch} from "react-redux";
-import {deleteCustomerActions} from "../../redux/Customer/CustomerActions";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteCustomerActions, findByNameActions, getCustomersAction} from "../../redux/Customer/CustomerActions";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Grid from "@material-ui/core/Grid";
+import {TextField, Tooltip} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import SearchIcon from '@material-ui/icons/Search';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import {filteredCustomersSelector} from "../../redux/Customer/CustomerSelectors";
+import Typography from "@material-ui/core/Typography";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -131,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         textDecoration: 'none',
-        '&:active, &:visited': {
+        '&:active, &:link, &:visited': {
             color: 'black',
         },
         '&:hover': {
@@ -144,12 +153,25 @@ const useStyles = makeStyles((theme) => ({
     },
     icon: {
         maxWidth: 50
-    }
+    },
+    searchBar: {
+        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    },
+    block: {
+        display: 'block',
+    },
+    searchInput: {
+        fontSize: theme.typography.fontSize,
+    },
+    addUser: {
+        marginRight: theme.spacing(1),
+    },
+    contentWrapper: {
+        margin: '40px 16px',
+    },
 }));
 
-export default function CustomersTable(props) {
-    const {customers, accounts} = props;
-
+export default function CustomersTable() {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -158,9 +180,18 @@ export default function CustomersTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const dispatch = useDispatch();
+    const valueRef = useRef();
+    const customers = useSelector(filteredCustomersSelector);
+
+    useEffect(() => {
+    }, [customers])
+
+    function getInputSearchValue() {
+        return valueRef.current.value;
+    }
 
     function getUserAccounts(id) {
-        return accounts.filter(a => a.accountOwnerId === id)
+        return customers.filter(c => c.id === id)[0].accounts
     }
 
     function createData(id, name, email, age, employer, accounts) {
@@ -173,7 +204,7 @@ export default function CustomersTable(props) {
         return rows.push(createData(
             c.id, c.name, c.email, c.age,
             <NavLink key={c.id + c.name} className={classes.title} to={`/employers/${c.id}`}
-                                                   refresh="true">View</NavLink>,
+                     refresh="true">View</NavLink>,
             <NavLink key={c.id + c.name + c.age} className={classes.title} to={`/accounts/${c.id}`}
                      refresh="true">{getUserAccounts(c.id).length}</NavLink>
         ))
@@ -202,85 +233,124 @@ export default function CustomersTable(props) {
 
     return (
         <div className={classes.root}>
-            <Paper className={classes.paper}>
-                <TableContainer>
-                    <Table
-                        className={classes.table}
-                        aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
-                        aria-label="enhanced table"
-                    >
-                        <EnhancedTableHead
-                            classes={classes}
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
-                        />
-                        <TableBody>
-                            {stableSort(rows, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                    return (
-                                        <TableRow
-                                            hover
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                            key={row.name + row.email + row.age}
-                                        >
-                                            <TableCell padding="checkbox">
-                                            </TableCell>
-                                            <TableCell component="th" scope="row" padding="none">
-                                                {row.name}
-                                            </TableCell>
-                                            <TableCell align="center">{row.email}</TableCell>
-                                            <TableCell align="center">{row.age}</TableCell>
-                                            <TableCell align="center">{row.employer}</TableCell>
-                                            <TableCell align="center">
-                                                {row.accounts}
-                                            </TableCell>
-                                            <TableCell className={classes.icon} align="center">
-                                                <LibraryAddIcon cursor="pointer"
-                                                                onClick={() => dispatch(toggleModalAction("new_account", row.id))}/>
-                                            </TableCell>
-                                            <TableCell className={classes.icon} align="center">
-                                                <BusinessCenterIcon cursor="pointer"
-                                                                    onClick={() => dispatch(toggleModalAction("new_employer", row.id))}/>
-                                            </TableCell>
-                                            <TableCell className={classes.icon} align="center">
-                                                <SettingsIcon cursor="pointer"
-                                                              onClick={() => dispatch(toggleModalAction("modify_customer", row.id))}/>
-                                            </TableCell>
-                                            <TableCell className={classes.icon} align="center">
-                                                <IconButton aria-label="delete">
-                                                    <DeleteIcon onClick={() =>
-                                                        dispatch(deleteCustomerActions(row.id))
-                                                    }/>
-                                                </IconButton>
-                                            </TableCell>
+            <AppBar className={classes.searchBar} position="static" color="default" elevation={0}>
+                <Toolbar>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item>
+                            <SearchIcon className={classes.block} color="inherit"/>
+                        </Grid>
+                        <Grid item xs>
+                            <TextField
+                                inputRef={valueRef}
+                                fullWidth
+                                placeholder="Search customer by name or email"
+                                InputProps={{
+                                    disableUnderline: true,
+                                    className: classes.searchInput,
+                                }}
+                                onChange={() => dispatch(findByNameActions(getInputSearchValue()))}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" color="primary" className={classes.addUser}
+                                    onClick={() => dispatch(toggleModalAction("new_customer"))}>
+                                Add customer
+                            </Button>
+                            <Tooltip title="Reload">
+                                <IconButton>
+                                    <RefreshIcon className={classes.block} color="inherit"
+                                                 onClick={() => dispatch(getCustomersAction())}/>
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
+                </Toolbar>
+            </AppBar>
+            {customers.length <= 0 ?
+                <div className={classes.contentWrapper}>
+                    <Typography color="textSecondary" align="center">
+                        No customers found!
+                    </Typography>
+                </div> :
+                <Paper className={classes.paper}>
+                    <TableContainer>
+                        <Table
+                            className={classes.table}
+                            aria-labelledby="tableTitle"
+                            size={dense ? 'small' : 'medium'}
+                            aria-label="enhanced table"
+                        >
+                            <EnhancedTableHead
+                                classes={classes}
+                                numSelected={selected.length}
+                                order={order}
+                                orderBy={orderBy}
+                                onRequestSort={handleRequestSort}
+                                rowCount={rows.length}
+                            />
+                            <TableBody>
+                                {stableSort(rows, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => {
+                                        return (
+                                            <TableRow
+                                                hover
+                                                role="checkbox"
+                                                tabIndex={-1}
+                                                key={row.name + row.email + row.age}
+                                            >
+                                                <TableCell padding="checkbox">
+                                                </TableCell>
+                                                <TableCell component="th" scope="row" padding="none">
+                                                    {row.name}
+                                                </TableCell>
+                                                <TableCell align="center">{row.email}</TableCell>
+                                                <TableCell align="center">{row.age}</TableCell>
+                                                <TableCell align="center">{row.employer}</TableCell>
+                                                <TableCell align="center">
+                                                    {row.accounts}
+                                                </TableCell>
+                                                <TableCell className={classes.icon} align="center">
+                                                    <LibraryAddIcon cursor="pointer"
+                                                                    onClick={() => dispatch(toggleModalAction("new_account", row.id))}/>
+                                                </TableCell>
+                                                <TableCell className={classes.icon} align="center">
+                                                    <BusinessCenterIcon cursor="pointer"
+                                                                        onClick={() => dispatch(toggleModalAction("new_employer", row.id))}/>
+                                                </TableCell>
+                                                <TableCell className={classes.icon} align="center">
+                                                    <SettingsIcon cursor="pointer"
+                                                                  onClick={() => dispatch(toggleModalAction("modify_customer", row.id))}/>
+                                                </TableCell>
+                                                <TableCell className={classes.icon} align="center">
+                                                    <IconButton aria-label="delete">
+                                                        <DeleteIcon onClick={() =>
+                                                            dispatch(deleteCustomerActions(row.id))
+                                                        }/>
+                                                    </IconButton>
+                                                </TableCell>
 
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 15]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </Paper>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
+                                        <TableCell colSpan={6}/>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 15]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </Paper>}
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
                 label="Dense padding"

@@ -19,6 +19,13 @@ const useStyles = makeStyles({
     },
     accTable: {
         fontWeight: "bold",
+    },
+    noData: {
+        fontSize: 18,
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 25,
+        marginBottom: 25
     }
 });
 
@@ -33,11 +40,11 @@ export default function AllAccountsTable() {
         dispatch(getAllAccounts())
     }, [dispatch])
 
-    if (allAccounts.length <= 0) return <p>There are no accounts yet!</p>
+    if (allAccounts.length <= 0) return <p className={classes.noData}>There are no accounts yet!</p>
 
     else if (allAccounts.length >= 1) {
 
-        const accountsData = allAccounts.map(a => renderAccounts(a.number, a.balance, a.currency, getAccountOwner(a.accountOwnerId)))
+        const accountsData = allAccounts.map(a => renderAccounts(a.number, a.balance, a.currency, getAccountOwner(a.id)))
 
         return (
             <TableContainer component={Paper}>
@@ -69,10 +76,13 @@ export default function AllAccountsTable() {
         )
     }
 
-    function getAccountOwner(ownerId) {
-        return allCustomers.filter(c => c.id === ownerId)[0].name;
+    function getAccountOwner(accId) {
+        let accOwnerName = "";
+        allCustomers.forEach(c => c.accounts.forEach(a => {
+            if (a.id === accId) accOwnerName = c.name
+        }));
+        return accOwnerName;
     }
-
 }
 
 

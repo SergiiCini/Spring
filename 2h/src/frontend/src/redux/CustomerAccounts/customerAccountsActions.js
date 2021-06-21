@@ -1,6 +1,7 @@
 import * as actions from '../actionTypes'
 import fetch from "unfetch";
 import {toggleModalAction} from "../ToggleModal/modalActions";
+import {getCustomersAction} from "../Customer/CustomerActions";
 
 const checkStatus = response => {
     if (response.ok) {
@@ -150,5 +151,6 @@ export const openNewAccountActions = (id, currency) => dispatch => {
             })
         })
         .then(()=> dispatch(getAllAccounts()))
+        .then(()=> dispatch(getCustomersAction()))
 }
 

@@ -26,8 +26,6 @@ public class CustomerController {
     @Autowired
     private AccountService accountService;
 
-    private EmployerService employerService;
-
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable long id) {
         Customer customer = customerService.getOne(id);

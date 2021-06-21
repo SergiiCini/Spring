@@ -20,8 +20,6 @@ public class Account extends AbstractEntity {
     private Currency currency;
     @Column(name = "a_balance", nullable = false)
     private double balance = 0.0;
-    @Column(name = "a_owner_id", nullable = false)
-    private long accountOwnerId;
 
     @JsonIgnore
     @ManyToOne
@@ -93,14 +91,6 @@ public class Account extends AbstractEntity {
         this.balance = balance;
     }
 
-    public Long getAccountOwnerId() {
-        return accountOwnerId;
-    }
-
-    public void setAccountOwnerId(long id) {
-        this.accountOwnerId = id;
-    }
-
     public Customer getCustomer() {
         return customer;
     }
@@ -114,12 +104,12 @@ public class Account extends AbstractEntity {
         if (this == o) return true;
         if (!(o instanceof Account)) return false;
         Account account = (Account) o;
-        return Double.compare(account.balance, balance) == 0 && accountOwnerId == account.accountOwnerId && Objects.equals(id, account.id) && Objects.equals(number, account.number) && currency == account.currency;
+        return Double.compare(account.balance, balance) == 0 && Objects.equals(id, account.id) && Objects.equals(number, account.number) && currency == account.currency && Objects.equals(customer, account.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, currency, balance, accountOwnerId);
+        return Objects.hash(id, number, currency, balance, customer);
     }
 
     @Override
@@ -129,7 +119,6 @@ public class Account extends AbstractEntity {
                 ", number='" + number + '\'' +
                 ", currency=" + currency +
                 ", balance=" + balance +
-                ", accountOwnerId=" + accountOwnerId +
                 '}';
     }
 }

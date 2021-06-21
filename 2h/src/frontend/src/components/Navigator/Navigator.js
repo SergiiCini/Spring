@@ -21,6 +21,9 @@ const styles = (theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
+  heading: {
+    marginBottom: 0
+  },
   categoryHeaderPrimary: {
     color: theme.palette.common.white,
   },
@@ -106,7 +109,7 @@ function Navigator(props) {
       <List disablePadding>
         <ListItem className={clsx(classes.firebase, classes.item, classes.itemCategory)}>
           <img className={classes.logo} src={logo}/>
-          <h3>ClientBank</h3>
+          <h3 className={classes.heading}>ClientBank</h3>
         </ListItem>
         <ListItem className={clsx(classes.item, classes.itemCategory)}>
           <ListItemIcon className={classes.itemIcon}>

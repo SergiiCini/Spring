@@ -46,7 +46,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account createAccount(long id, String currency) {
         Account account = new Account();
-        account.setAccountOwnerId(id);
         account.setCurrency(currency);
         return account;
     }

@@ -27,6 +27,13 @@ const useStyles = makeStyles({
     },
     accTable: {
         fontWeight: "bold",
+    },
+    noData: {
+        fontSize: 18,
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 25,
+        marginBottom: 25
     }
 });
 
@@ -42,7 +49,7 @@ export default function AccountsTable() {
         dispatch(customerAccountsActions(id));
     }, [dispatch, id, accounts])
 
-    if (curCustomerAccounts.length <= 0) return <p>This customer doesn't have any accounts!</p>
+    if (curCustomerAccounts.length <= 0) return <p className={classes.noData}>This customer doesn't have any accounts!</p>
     else if (curCustomerAccounts.length > 0) {
         const accountsData = curCustomerAccounts.map(a => renderAccounts(a.number, a.balance, a.currency, a.id))
 

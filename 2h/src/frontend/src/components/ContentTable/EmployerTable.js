@@ -22,6 +22,13 @@ const useStyles = makeStyles({
     },
     accTable: {
         fontWeight: "bold",
+    },
+    noData: {
+        fontSize: 18,
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 25,
+        marginBottom: 25
     }
 });
 
@@ -56,7 +63,7 @@ export default function EmployerTable() {
         </TableContainer>
     );
 
-    if (employers.length <= 0) return <p>There are no employers data yet!</p>
+    if (employers.length <= 0) return <p className={classes.noData}>There are no employers data yet!</p>
     else if (employers.length > 0) {
         return renderData
     }
