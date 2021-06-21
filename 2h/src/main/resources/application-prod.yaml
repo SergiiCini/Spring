@@ -1,0 +1,11 @@
+spring:
+
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/client_bank"
+    username: "postgres"
+    password: "82161487"

@@ -7,15 +7,9 @@ import AppRoutes from "../../routes/AppRoutes";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
-import {Tooltip} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import RefreshIcon from "@material-ui/icons/Refresh";
-import {getCustomersAction} from "../../redux/Customer/CustomerActions";
 import {useDispatch} from "react-redux";
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-
-const styles = (theme) => ({
+const styles = () => ({
     paper: {
         maxWidth: 1200,
         margin: 'auto',

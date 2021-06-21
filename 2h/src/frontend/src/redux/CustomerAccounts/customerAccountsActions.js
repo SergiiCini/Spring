@@ -64,6 +64,7 @@ export const deleteAccountActions = (id) => dispatch => {
                 payload: updatedAccountsList
             })
         })
+        .then(() => dispatch(getCustomersAction()))
 }
 
 export const topUpAccountActions = (transactionData) => dispatch => {
@@ -122,7 +123,7 @@ export const sendMoneyActions = (transactionalData) => dispatch => {
         .then(res => res.json())
         .then(data => {
             let sendInfo = data;
-            if(data) dispatch(toggleModalAction("success"))
+            if (data) dispatch(toggleModalAction("success"))
             return sendInfo;
         })
         .then(sendInfo => {
@@ -150,7 +151,7 @@ export const openNewAccountActions = (id, currency) => dispatch => {
                 payload: customerWithNewAcc
             })
         })
-        .then(()=> dispatch(getAllAccounts()))
-        .then(()=> dispatch(getCustomersAction()))
+        .then(() => dispatch(getAllAccounts()))
+        .then(() => dispatch(getCustomersAction()))
 }
 
