@@ -12,6 +12,6 @@ spring:
     url: "jdbc:h2:mem:2"
     username: sa
     password:
-
+  data: data.sql
 
 

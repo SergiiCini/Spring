@@ -5,6 +5,6 @@ spring:
     hibernate:
       ddl-auto: create
   datasource:
-    url: "jdbc:postgresql://localhost:5432/client_bank"
-    username: "postgres"
-    password: "82161487"
+    url: "jdbc:postgresql://dumbo.db.elephantsql.com/"
+    username: "tavvnzuz"
+    password: "mP8sXksLyc5GB3LEGRBwoDcvEW4RBH4-"
