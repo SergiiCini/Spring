@@ -53,7 +53,7 @@ const customerReducer = (store = initialStore, action) => {
         case actions.FIND_CUSTOMER_BY_NAME:
             const customersToMod = [...store.customers];
             let customerToFind;
-            let {inputData} = action.payload
+            let {inputData} = action.payload;
             if (inputData !== "") {
                 customerToFind = customersToMod.filter(c => {
                     return (c.name.indexOf(action.payload) !== -1 || c.email.indexOf(action.payload) !== -1)

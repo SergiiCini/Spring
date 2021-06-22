@@ -9,9 +9,8 @@ import java.util.List;
 @Entity(name = "Employer")
 @Table(name = "employer")
 public class Employer extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "e_id")
+
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "e_name",
@@ -25,7 +24,7 @@ public class Employer extends AbstractEntity {
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "employers_customers",
-            joinColumns = {@JoinColumn(name = "employer_id", foreignKey = @ForeignKey(name = "emp_cus_employer_id_fk"), referencedColumnName = "e_id")},
+            joinColumns = {@JoinColumn(name = "employer_id", foreignKey = @ForeignKey(name = "emp_cus_employer_id_fk"), referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "emp_cus_customer_id_fk"), referencedColumnName = "id")})
     private List<Customer> customers = new ArrayList<>();
 

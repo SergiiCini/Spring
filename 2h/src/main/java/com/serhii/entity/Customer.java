@@ -8,8 +8,6 @@ import java.util.List;
 @Table(name = "customers")
 public class Customer extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

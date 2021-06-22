@@ -10,8 +10,7 @@ import java.util.UUID;
 @Entity(name = "Accounts")
 @Table(name = "accounts")
 public class Account extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id")
     private Long id;
     @Column(name = "a_number", nullable = false)
