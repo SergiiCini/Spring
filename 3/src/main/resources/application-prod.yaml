@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: "jdbc:postgresql://dumbo.db.elephantsql.com/"
+    username: "tavvnzuz"
+    password: "mP8sXksLyc5GB3LEGRBwoDcvEW4RBH4-"
