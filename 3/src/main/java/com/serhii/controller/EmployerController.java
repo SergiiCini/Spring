@@ -1,14 +1,16 @@
 package com.serhii.controller;
 
-import com.serhii.entity.Customer;
+import com.serhii.dto.EmployerDtoReq;
+import com.serhii.dto.EmployerDtoRes;
 import com.serhii.entity.Employer;
+import com.serhii.facade.EmployerFacade;
 import com.serhii.service.EmployerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequestMapping("/api")
@@ -17,26 +19,32 @@ import java.util.List;
 public class EmployerController {
 
     private final EmployerService employerService;
+    private final EmployerFacade employerFacade;
 
     @GetMapping("/employer/{id}")
-    public Employer getEmployer(@PathVariable Long id) {
-        return employerService.getOne(id);
+    public EmployerDtoRes getEmployer(@PathVariable Long id) {
+        return employerFacade.convertToDto(employerService.getOne(id));
     }
 
     @GetMapping("/employer")
-    public List<Employer> getAllEmployers(){
-        System.out.println(employerService.findAll());
-        return employerService.findAll();
+    public List<EmployerDtoRes> getAllEmployers(){
+        return employerService.findAll()
+                .stream()
+                .map(employerFacade::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/employer")
-    public Employer addNewEmployer(@RequestBody Employer employer){
-        return employerService.save(employer);
+    public EmployerDtoRes addNewEmployer(@RequestBody EmployerDtoReq employerDtoReq){
+        return employerFacade.convertToDto(employerService.save(employerFacade.convertToEntity(employerDtoReq)));
     }
 
     @DeleteMapping("/employer/{id}")
-    public List<Employer> deleteEmployerById(@PathVariable Long id) {
+    public List<EmployerDtoRes> deleteEmployerById(@PathVariable Long id) {
         employerService.deleteById(id);
-        return employerService.findAll();
+        return employerService.findAll()
+                .stream()
+                .map(employerFacade::convertToDto)
+                .collect(Collectors.toList());
     }
 }

@@ -1,10 +1,12 @@
 package com.serhii.controller;
 
+import com.serhii.dto.AccountDtoRes;
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
 import com.serhii.entity.TransactionData;
 import com.serhii.exception_handling.NoSuchAccountException;
 import com.serhii.exception_handling.OutOfBalanceException;
+import com.serhii.facade.AccountFacade;
 import com.serhii.service.AccountService;
 import com.serhii.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequestMapping("/api")
@@ -25,15 +28,22 @@ public class AccountController {
 
     private final AccountService accountService;
     private final CustomerService customerService;
+    private final AccountFacade accountFacade;
 
     @GetMapping("/account/")
-    public List<Account> getAllAccounts() {
-        return accountService.findAll();
+    public List<AccountDtoRes> getAllAccounts() {
+        return accountService.findAll()
+                .stream()
+                .map(accountFacade::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/account/{id}")
-    public List<Account> getCustomerAccount(@PathVariable long id) {
-        return accountService.getCustomerAccounts(id);
+    public List<AccountDtoRes> getCustomerAccount(@PathVariable long id) {
+        return accountService.getCustomerAccounts(id)
+                .stream()
+                .map(accountFacade::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @PutMapping("/account/top_up")
@@ -76,8 +86,11 @@ public class AccountController {
     }
 
     @DeleteMapping("/account/{id}")
-    public List<Account> deleteAccount(@PathVariable long id) {
+    public List<AccountDtoRes> deleteAccount(@PathVariable long id) {
         accountService.deleteById(id);
-        return accountService.findAll();
+        return accountService.findAll()
+                .stream()
+                .map(accountFacade::convertToDto)
+                .collect(Collectors.toList());
     }
 }

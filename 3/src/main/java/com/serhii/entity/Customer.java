@@ -51,13 +51,13 @@ public class Customer extends AbstractEntity {
         }
     }
 
-    public void addEmployer(Employer employer){
-        if(!this.employers.contains(employer))
-        employers.add(employer);
+    public void addEmployer(Employer employer) {
+        if (!this.employers.contains(employer))
+            employers.add(employer);
         employer.getCustomers().add(this);
     }
 
-    public void removeEmployer(Employer employer){
+    public void removeEmployer(Employer employer) {
         employers.remove(employer);
         employer.getCustomers().remove(this);
     }

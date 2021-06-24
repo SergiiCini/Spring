@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CustomerDto {
+public class CustomerDtoRes {
     private Long id;
     private String name;
     private String email;

@@ -5,7 +5,7 @@ import com.serhii.entity.Customer;
 import lombok.Data;
 
 @Data
-public class AccountDto {
+public class AccountDtoRes {
     private Long id;
     private String number;
     private Currency currency;
