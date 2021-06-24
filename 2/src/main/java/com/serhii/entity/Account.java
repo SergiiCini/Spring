@@ -3,8 +3,6 @@ package com.serhii.entity;
 import com.serhii.additionals.Currency;
 import com.serhii.exception_handling.NoSuchAccountException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 

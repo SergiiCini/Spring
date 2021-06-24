@@ -19,11 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable long id) {

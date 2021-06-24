@@ -23,11 +23,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountController {
 
-    @Autowired
-    AccountService accountService;
-
-    @Autowired
-    CustomerService customerService;
+    private final AccountService accountService;
+    private final CustomerService customerService;
 
     @GetMapping("/account/")
     public List<Account> getAllAccounts() {

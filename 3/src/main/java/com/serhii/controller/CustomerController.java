@@ -1,18 +1,21 @@
 package com.serhii.controller;
 
+import com.serhii.dto.CustomerDto;
+import com.serhii.dto.CustomerDtoResponse;
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
 import com.serhii.entity.Employer;
 import com.serhii.exception_handling.NoSuchCustomerException;
 import com.serhii.service.AccountService;
 import com.serhii.service.CustomerService;
-import com.serhii.service.EmployerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequestMapping("/api")
@@ -20,26 +23,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private AccountService accountService;
+    private final CustomerService customerService;
+    private final AccountService accountService;
+    private final CustomerDtoResponse customerDtoResponse;
 
     @GetMapping("/customer/{id}")
-    public Customer getCustomer(@PathVariable long id) {
-        Customer customer = customerService.getOne(id);
+    public CustomerDto getCustomer(@PathVariable long id) {
+        CustomerDto customer = customerDtoResponse.convertToDto(customerService.getOne(id));
         if (customer == null)
             throw new NoSuchCustomerException("There is no such customer in Database");
         return customer;
     }
 
     @GetMapping("/customer")
-    public List<Customer> getAllCustomers() {
-        List<Customer> customers = customerService.findAll();
-        if (customers == null)
+    public List<CustomerDto> getAllCustomers() {
+        Optional<List<CustomerDto>> customersOpt = Optional.of(customerService.findAll()
+                .stream()
+                .map(customerDtoResponse::convertToDto)
+                .collect(Collectors.toList()));
+        System.out.println(customersOpt);
+        if (customersOpt.isPresent()) return customersOpt.get();
+        else
             throw new NoSuchCustomerException("There is no customers in Database");
-        return customers;
     }
 
     @PostMapping("/customer")
