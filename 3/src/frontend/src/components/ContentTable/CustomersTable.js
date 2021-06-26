@@ -60,6 +60,7 @@ function stableSort(array, comparator) {
 const headCells = [
     {id: 'name', numeric: false, disablePadding: true, label: 'Name'},
     {id: 'email', numeric: false, disablePadding: false, label: 'Email'},
+    {id: 'cell', numeric: false, disablePadding: false, label: 'Cell number'},
     {id: 'age', numeric: false, disablePadding: false, label: 'Age'},
     {id: 'employer', numeric: false, disablePadding: false, label: 'Employer'},
     {id: 'accounts', numeric: false, disablePadding: false, label: 'Accounts'},
@@ -126,6 +127,7 @@ const useStyles = makeStyles((theme) => ({
     },
     table: {
         minWidth: 750,
+
     },
     visuallyHidden: {
         border: 0,
@@ -194,15 +196,16 @@ export default function CustomersTable() {
         return customers.filter(c => c.id === id)[0].accounts
     }
 
-    function createData(id, name, email, age, employer, accounts) {
-        return {id, name, email, age, employer, accounts};
+    function createData(id, name, email, cell, age, employer, accounts) {
+        return {id, name, email, cell, age, employer, accounts};
     }
 
     const rows = [];
 
     customers.map(c => {
+        console.log("Cell number: " + c.cell)
         return rows.push(createData(
-            c.id, c.name, c.email, c.age,
+            c.id, c.name, c.email, c.cell, c.age,
             <NavLink key={c.id + c.name} className={classes.title} to={`/employers/${c.id}`}
                      refresh="true">View</NavLink>,
             <NavLink key={c.id + c.name + c.age} className={classes.title} to={`/accounts/${c.id}`}
@@ -297,7 +300,7 @@ export default function CustomersTable() {
                                                 hover
                                                 role="checkbox"
                                                 tabIndex={-1}
-                                                key={row.name + row.email + row.age}
+                                                key={row.name + row.email + row.cell}
                                             >
                                                 <TableCell padding="checkbox">
                                                 </TableCell>
@@ -305,6 +308,7 @@ export default function CustomersTable() {
                                                     {row.name}
                                                 </TableCell>
                                                 <TableCell align="center">{row.email}</TableCell>
+                                                <TableCell align="center">{row.cell}</TableCell>
                                                 <TableCell align="center">{row.age}</TableCell>
                                                 <TableCell align="center">{row.employer}</TableCell>
                                                 <TableCell align="center">

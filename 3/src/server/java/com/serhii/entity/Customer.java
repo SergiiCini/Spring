@@ -26,14 +26,14 @@ public class Customer extends AbstractEntity {
     @Column(name = "c_email")
     private String email;
 
+    @Column(name = "c_cell_number")
+    private String cell;
+
     @Column(name = "c_age")
     private Integer age;
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "c_cell_number")
-    private int cellNumber;
 
     @OneToMany(mappedBy = "customer",
             orphanRemoval = true,
@@ -69,6 +69,8 @@ public class Customer extends AbstractEntity {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", password='" + password + '\'' +
+                ", cellNumber=" + cell +
                 '}';
     }
 }

@@ -22,11 +22,12 @@ const customerReducer = (store = initialStore, action) => {
                 filteredCustomers: currentCustomers
             }
         case actions.CHANGE_CUSTOMER_DATA:
-            const {id, modifyedCustomer} = action.payload;
+            const {id, modifiedCustomer} = action.payload;
             const changeCustomersStore = [...store.customers];
-            changeCustomersStore.filter(c => c.id === id)[0].name = modifyedCustomer.name;
-            changeCustomersStore.filter(c => c.id === id)[0].age = modifyedCustomer.age;
-            changeCustomersStore.filter(c => c.id === id)[0].email = modifyedCustomer.email;
+            changeCustomersStore.filter(c => c.id === id)[0].name = modifiedCustomer.name;
+            changeCustomersStore.filter(c => c.id === id)[0].age = modifiedCustomer.age;
+            changeCustomersStore.filter(c => c.id === id)[0].cell = modifiedCustomer.cell;
+            changeCustomersStore.filter(c => c.id === id)[0].email = modifiedCustomer.email;
             return {
                 ...store,
                 customers: changeCustomersStore,

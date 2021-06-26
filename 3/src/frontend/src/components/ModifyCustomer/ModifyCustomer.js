@@ -12,8 +12,8 @@ import {customersSelector} from "../../redux/Customer/CustomerSelectors";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 300,
-        height: 300,
+        width: 400,
+        height: 400,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center'
@@ -48,6 +48,7 @@ const ModifyCustomer = () => {
                 initialValues={{
                     name: currentCustomer.name,
                     email: currentCustomer.email,
+                    cell: currentCustomer.cell,
                     age: currentCustomer.age
                 }}
                 validationSchema={Yup.object().shape({
@@ -56,6 +57,9 @@ const ModifyCustomer = () => {
                     email: Yup.string()
                         .email('Email is invalid')
                         .required('Email is required'),
+                    cell: Yup.string()
+                        .matches('^(\\+\\d{1,3}( )?)?\\d{11}$', 'Cell number begins +380')
+                        .required('Cell number is required'),
                     age: Yup.number()
                         .moreThan(17, 'Your age should be not less than 18 years')
                         .required('Age is required'),
@@ -73,6 +77,10 @@ const ModifyCustomer = () => {
                         <div className={classes.form}>
                             <Field component={TextField} label="Email"
                                    helperText="Please Enter Email" name="email" type="text"/>
+                        </div>
+                        <div className={classes.form}>
+                            <Field component={TextField} label="Cell number( +380 ) "
+                                   helperText="Please Enter Your cell number" name="cell" type="text"/>
                         </div>
                         <div className={classes.form}>
                             <Field component={TextField} label="Age"

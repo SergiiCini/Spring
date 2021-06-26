@@ -17,10 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
     private final AccountRepository accountRepository;
-
-    @Autowired
     private final CustomerRepository customerRepository;
 
     @Override
@@ -54,6 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> curCustomer = customerRepository.findById(id);
         if(curCustomer.isPresent()){
             curCustomer.get().setName(customer.getName());
+            curCustomer.get().setCell(customer.getCell());
             curCustomer.get().setAge(customer.getAge());
             curCustomer.get().setEmail(customer.getEmail());
             customerRepository.save(curCustomer.get());

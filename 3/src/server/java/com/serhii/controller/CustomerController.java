@@ -3,7 +3,6 @@ package com.serhii.controller;
 import com.serhii.dto.*;
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
-import com.serhii.entity.Employer;
 import com.serhii.exception_handling.NoSuchCustomerException;
 import com.serhii.facade.AccountFacade;
 import com.serhii.facade.CustomerFacade;
@@ -56,7 +55,7 @@ public class CustomerController {
     }
 
     @PutMapping("/customer/modify/{id}")
-    public CustomerDtoRes updateCustomer(@PathVariable long id, @RequestBody CustomerDtoReq customerDtoReq) {
+    public CustomerDtoRes updateCustomer(@PathVariable long id, @RequestBody @Valid CustomerDtoReq customerDtoReq) {
         return customerFacade.convertToDto(customerService.modify(id, customerFacade.convertToEntity(customerDtoReq)));
     }
 

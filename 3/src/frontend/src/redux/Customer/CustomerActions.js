@@ -27,6 +27,7 @@ export const getCustomersAction = () => (dispatch) =>
         })
 
 export const addNewCustomerActions = (newCustomerData) => (dispatch) => {
+    console.log(newCustomerData)
     return fetch("/api/customer", {
         method: "POST",
         body: JSON.stringify(newCustomerData),
@@ -60,13 +61,13 @@ export const changeCustomerActions = (id, customerData) => (dispatch) => {
         .then(checkStatus)
         .then(res => res.json())
         .then(data => {
-            let modifyedCustomer = data;
-            return modifyedCustomer;
+            let modifiedCustomer = data;
+            return modifiedCustomer;
         })
-        .then(modifyedCustomer => {
+        .then(modifiedCustomer => {
             dispatch({
                 type: actions.CHANGE_CUSTOMER_DATA,
-                payload: {id, modifyedCustomer},
+                payload: {id, modifiedCustomer},
             })
         })
 }

@@ -11,8 +11,8 @@ public class CustomerDtoRes {
     private Long id;
     private String name;
     private String email;
+    private String cell;
     private String age;
-    private String cellNumber;
     private List<Account> accounts;
     private List<Employer> employers;
 }
