@@ -13,7 +13,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {allEmployersSelector} from "../../redux/Employer/EmployerSelector";
 import {allEmployersActions, removeEmployerActions} from "../../redux/Employer/EmployerActions";
 import {getCustomersAction} from "../../redux/Customer/CustomerActions";
-import {customersSelector} from "../../redux/Customer/CustomerSelectors";
+import {customersNumberSelector, customersSelector} from "../../redux/Customer/CustomerSelectors";
 import {useParams} from "react-router";
 
 const useStyles = makeStyles({
@@ -38,11 +38,12 @@ export default function EmployerTable() {
     const dispatch = useDispatch();
     const employers = useSelector(allEmployersSelector)
     const customers = useSelector(customersSelector)
+    const customersAmount = useSelector(customersNumberSelector);
 
     useEffect
     (() => {
         dispatch(allEmployersActions());
-        dispatch(getCustomersAction())
+        dispatch(getCustomersAction(0, customersAmount))
     }, [dispatch])
 
     const renderData = (
@@ -77,7 +78,7 @@ export default function EmployerTable() {
                 <TableCell align="center">
                     <IconButton aria-label="delete">
                         <DeleteIcon onClick={() => {
-                            dispatch(removeEmployerActions(empId));
+                            dispatch(removeEmployerActions(empId, customersAmount));
                         }
                         }/>
                     </IconButton>

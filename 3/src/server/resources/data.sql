@@ -1,12 +1,12 @@
-INSERT INTO customers (c_name, c_email, c_age) VALUES
-('Petro Kovalsky', 'petro87@gmail.com', 33),
-('Anna Ivanova', 'ann_lucky@gmail.com', 32),
-('Anton Ozirsky', 'toxa_15@gmail.com', 30),
-('Serhii Kozerovsky', 'kozer@gmail.com', 42),
-('Andrii Kozeletsky', 'hudzon@gmail.com', 36),
-('Tanya Kolomiets', 'tanya@gmail.com', 50),
-('Ivan Podduiev', 'johhny@gmail.com', 45),
-('Alex Romanenko', 'psixeya@gmail.com', 33);
+INSERT INTO customers (created_date, c_name, c_email, c_age) VALUES
+(NOW(), 'Petro Kovalsky', 'petro87@gmail.com', 33),
+(NOW(), 'Anna Ivanova', 'ann_lucky@gmail.com', 32),
+(NOW(), 'Anton Ozirsky', 'toxa_15@gmail.com', 30),
+(NOW(), 'Serhii Kozerovsky', 'kozer@gmail.com', 42),
+(NOW(), 'Andrii Kozeletsky', 'hudzon@gmail.com', 36),
+(NOW(), 'Tanya Kolomiets', 'tanya@gmail.com', 50),
+(NOW(), 'Ivan Podduiev', 'johhny@gmail.com', 45),
+(NOW(), 'Alex Romanenko', 'psixeya@gmail.com', 33);
 
 INSERT INTO accounts (a_number, a_currency, a_balance) VALUES
 ('64c692de-5d03-4764-b152-4d22fee68e4f', 2, 15000),

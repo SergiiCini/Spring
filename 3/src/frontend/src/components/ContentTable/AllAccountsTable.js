@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAllAccounts} from "../../redux/CustomerAccounts/customerAccountsActions";
 import {allAccountsSelector} from "../../redux/CustomerAccounts/customerAccountsSelectors";
 import {getCustomersAction} from "../../redux/Customer/CustomerActions";
-import {customersSelector} from "../../redux/Customer/CustomerSelectors";
+import {customersNumberSelector, customersSelector} from "../../redux/Customer/CustomerSelectors";
 
 const useStyles = makeStyles({
     table: {
@@ -34,9 +34,11 @@ export default function AllAccountsTable() {
     const dispatch = useDispatch();
     const allAccounts = useSelector(allAccountsSelector);
     const allCustomers = useSelector(customersSelector);
+    const customersAmount = useSelector(customersNumberSelector);
+
 
     useEffect(() => {
-        dispatch(getCustomersAction())
+        dispatch(getCustomersAction(0, customersAmount))
         dispatch(getAllAccounts())
     }, [dispatch])
 

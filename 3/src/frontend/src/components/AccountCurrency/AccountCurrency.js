@@ -10,6 +10,7 @@ import {openNewAccountActions} from "../../redux/CustomerAccounts/customerAccoun
 import {useDispatch, useSelector} from "react-redux";
 import {modalGetCustomerId} from "../../redux/ToggleModal/modalSelector";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
+import {customersNumberSelector} from "../../redux/Customer/CustomerSelectors";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -30,6 +31,8 @@ export default function AccountCurrency() {
     const [value, setValue] = useState('');
     const dispatch = useDispatch();
     const id = useSelector(modalGetCustomerId);
+    const customersAmount = useSelector(customersNumberSelector);
+
 
     const handleRadioChange = (event) => {
         setValue(event.target.value);
@@ -46,7 +49,7 @@ export default function AccountCurrency() {
                     <FormControlLabel value="GBP" control={<Radio />} label="GBP" />
                 </RadioGroup>
                 <Button type="submit" variant="outlined" color="primary" className={classes.button}
-                        onClick={() => {dispatch(openNewAccountActions(id, value));
+                        onClick={() => {dispatch(openNewAccountActions(id, value, customersAmount));
                                         dispatch(toggleModalAction())}}>
                     Open account
                 </Button>

@@ -7,9 +7,13 @@ import com.serhii.exception_handling.NoSuchCustomerException;
 import com.serhii.repository.AccountRepository;
 import com.serhii.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +30,18 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> findAll() {
-        return customerRepository.findAll();
+    public PageImpl<Customer> findAll(int pageNumber, Integer pageSize) {
+        Pageable paging = PageRequest.of(pageNumber, pageSize);
+        Page<Customer> pagedResult = customerRepository.findAll(paging);
+        long totalElements = pagedResult.getTotalElements();
+
+        if(pagedResult.hasContent()) {
+            return new PageImpl<>(pagedResult.getContent(), paging, totalElements);
+        }
+        else {
+            throw new NoSuchCustomerException("No customers in DB!");
+        }
+//        return (List<Customer>) findAllCustomersRepository.findAll();
     }
 
     @Override

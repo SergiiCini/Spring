@@ -11,7 +11,7 @@ import {useDispatch} from "react-redux";
 
 const styles = () => ({
     paper: {
-        maxWidth: 1200,
+        maxWidth: 1300,
         margin: 'auto',
         overflow: 'hidden',
     },
@@ -30,12 +30,12 @@ const styles = () => ({
 });
 
 function Content(props) {
-    const {classes, customers, accounts} = props;
+    const {classes, customersNumber, accounts} = props;
     const dispatch = useDispatch();
 
     return (
         <Paper className={classes.paper}>
-            {customers.length <= 0 ?
+            {+customersNumber <= 0 ?
                 <div className={classes.contentWrapper}>
                     <Grid item className={classes.addButtonWrapper}>
                         <Button variant="contained" color="primary" className={classes.addUser}
@@ -47,7 +47,7 @@ function Content(props) {
                         No data for this project yet
                     </Typography>
                 </div> :
-                <AppRoutes customers={customers} accounts={accounts}/>}
+                <AppRoutes accounts={accounts}/>}
         </Paper>
     );
 }

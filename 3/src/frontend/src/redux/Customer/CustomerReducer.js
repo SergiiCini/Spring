@@ -2,7 +2,8 @@ import * as actions from '../actionTypes'
 
 const initialStore = {
     customers: [],
-    filteredCustomers: []
+    filteredCustomers: [],
+    customersNumber: []
 }
 
 const customerReducer = (store = initialStore, action) => {
@@ -12,6 +13,11 @@ const customerReducer = (store = initialStore, action) => {
                 ...store,
                 customers: action.payload,
                 filteredCustomers: action.payload
+            }
+            case actions.GET_CUSTOMERS_AMOUNT:
+            return {
+                ...store,
+                customersNumber: action.payload
             }
         case actions.ADD_NEW_CUSTOMER:
             const currentCustomers = [...store.customers];
@@ -31,6 +37,7 @@ const customerReducer = (store = initialStore, action) => {
             return {
                 ...store,
                 customers: changeCustomersStore,
+                filteredCustomers: changeCustomersStore
             }
         case actions.DELETE_CUSTOMER:
             const deletedCustomersData = [...store.customers];

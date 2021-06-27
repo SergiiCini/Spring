@@ -3,6 +3,7 @@ package com.serhii.service;
 import com.serhii.entity.Account;
 import com.serhii.entity.Customer;
 import com.serhii.entity.Employer;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface CustomerService {
 
     public Customer save(Customer customer);
 
-    public List<Customer> findAll();
+    public PageImpl<Customer> findAll(int pageNumber, Integer pageSize);
 
     public Customer deleteById(long id);
 

@@ -11,8 +11,8 @@ const checkStatus = response => {
     return Promise.reject(error);
 }
 
-export const getCustomersAction = () => (dispatch) =>
-    fetch("/api/customer")
+export const getCustomersAction = (page, rowsPerPage) => (dispatch) =>
+    fetch("/api/customer?pageSize=" + rowsPerPage + "&pageNumber=" + page)
         .then(checkStatus)
         .then(res => res.json())
         .then(data => {
@@ -25,9 +25,26 @@ export const getCustomersAction = () => (dispatch) =>
                 payload: customersList
             })
         })
+        .then (() => dispatch(getCustomersAmountActions()))
+
+
+export const getCustomersAmountActions = () => dispatch => {
+    fetch("/api/customer/pages")
+        .then(checkStatus)
+        .then(res => res.json())
+        .then(data => {
+            let customersAmount = data;
+            return customersAmount;
+        })
+        .then(customersAmount => {
+            dispatch({
+                type: actions.GET_CUSTOMERS_AMOUNT,
+                payload: customersAmount
+            })
+        })
+}
 
 export const addNewCustomerActions = (newCustomerData) => (dispatch) => {
-    console.log(newCustomerData)
     return fetch("/api/customer", {
         method: "POST",
         body: JSON.stringify(newCustomerData),
@@ -47,6 +64,8 @@ export const addNewCustomerActions = (newCustomerData) => (dispatch) => {
                 payload: newCustomer
             })
         })
+        .then (() => dispatch(getCustomersAmountActions()))
+
 }
 
 export const changeCustomerActions = (id, customerData) => (dispatch) => {

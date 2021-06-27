@@ -19,7 +19,11 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCustomerActions, findByNameActions, getCustomersAction} from "../../redux/Customer/CustomerActions";
+import {
+    deleteCustomerActions,
+    findByNameActions, getCustomersAction,
+    getCustomersPaginationActions
+} from "../../redux/Customer/CustomerActions";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -28,7 +32,10 @@ import {TextField, Tooltip} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import {filteredCustomersSelector} from "../../redux/Customer/CustomerSelectors";
+import {
+    customersNumberSelector,
+    filteredCustomersSelector
+} from "../../redux/Customer/CustomerSelectors";
 import Typography from "@material-ui/core/Typography";
 
 function descendingComparator(a, b, orderBy) {
@@ -171,22 +178,39 @@ const useStyles = makeStyles((theme) => ({
     contentWrapper: {
         margin: '40px 16px',
     },
+    mainTable: {
+        minWidth: 950
+    }
 }));
 
-export default function CustomersTable() {
+export default function CustomersTable(text, reviver) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const dispatch = useDispatch();
     const valueRef = useRef();
     const customers = useSelector(filteredCustomersSelector);
+    const customersAmount = useSelector(customersNumberSelector);
+    const rows = [];
+
 
     useEffect(() => {
-    }, [customers])
+        dispatch(getCustomersAction(page, rowsPerPage));
+        }, [page, rowsPerPage])
+
+    function getRowsPerPageArray(){
+        let rowsArray = [];
+        for(let i = 1; i <= customersAmount; i++){
+            if(i % 10 === 0){
+                rowsArray.push(i)
+            }
+        }
+        return rowsArray;
+    }
 
     function getInputSearchValue() {
         return valueRef.current.value;
@@ -200,10 +224,7 @@ export default function CustomersTable() {
         return {id, name, email, cell, age, employer, accounts};
     }
 
-    const rows = [];
-
     customers.map(c => {
-        console.log("Cell number: " + c.cell)
         return rows.push(createData(
             c.id, c.name, c.email, c.cell, c.age,
             <NavLink key={c.id + c.name} className={classes.title} to={`/employers/${c.id}`}
@@ -220,7 +241,9 @@ export default function CustomersTable() {
     };
 
     const handleChangePage = (event, newPage) => {
+        console.log("New page: " + newPage)
         setPage(newPage);
+
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -231,8 +254,6 @@ export default function CustomersTable() {
     const handleChangeDense = (event) => {
         setDense(event.target.checked);
     };
-
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
@@ -262,7 +283,7 @@ export default function CustomersTable() {
                             <Tooltip title="Reload">
                                 <IconButton>
                                     <RefreshIcon className={classes.block} color="inherit"
-                                                 onClick={() => dispatch(getCustomersAction())}/>
+                                                 onClick={() => dispatch(getCustomersAction(page, rowsPerPage))}/>
                                 </IconButton>
                             </Tooltip>
                         </Grid>
@@ -293,10 +314,10 @@ export default function CustomersTable() {
                             />
                             <TableBody>
                                 {stableSort(rows, getComparator(order, orderBy))
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row) => {
                                         return (
                                             <TableRow
+                                                className={classes.mainTable}
                                                 hover
                                                 role="checkbox"
                                                 tabIndex={-1}
@@ -333,22 +354,16 @@ export default function CustomersTable() {
                                                         }/>
                                                     </IconButton>
                                                 </TableCell>
-
                                             </TableRow>
                                         );
                                     })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
-                                        <TableCell colSpan={6}/>
-                                    </TableRow>
-                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 15]}
+                        rowsPerPageOptions={getRowsPerPageArray()}
                         component="div"
-                        count={rows.length}
+                        count={customersAmount}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onChangePage={handleChangePage}

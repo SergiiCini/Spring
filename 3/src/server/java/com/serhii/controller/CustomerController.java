@@ -28,7 +28,7 @@ public class CustomerController {
     private final AccountService accountService;
     private final CustomerFacade customerFacade;
     private final EmployerFacade employerFacade;
-    private  final AccountFacade accountFacade;
+    private final AccountFacade accountFacade;
 
     @GetMapping("/customer/{id}")
     public CustomerDtoRes getCustomer(@PathVariable long id) {
@@ -39,14 +39,20 @@ public class CustomerController {
     }
 
     @GetMapping("/customer")
-    public List<CustomerDtoRes> getAllCustomers() {
-        Optional<List<CustomerDtoRes>> customersOpt = Optional.of(customerService.findAll()
+    public List<CustomerDtoRes> getAllCustomers(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                @RequestParam(defaultValue = "10") Integer pageSize) {
+        List<CustomerDtoRes> customers = customerService.findAll(pageNumber, pageSize)
                 .stream()
                 .map(customerFacade::convertToDto)
-                .collect(Collectors.toList()));
-        if (customersOpt.isPresent()) return customersOpt.get();
-        else
-            throw new NoSuchCustomerException("There is no customers in Database");
+                .collect(Collectors.toList());
+         return customers;
+    }
+
+    @GetMapping("/customer/pages")
+    public Long getTotalCustomers(@RequestParam(defaultValue = "0") int pageNumber,
+                                     @RequestParam(defaultValue = "2") Integer pageSize){
+        Long pages = customerService.findAll(pageNumber, pageSize).getTotalElements();
+        return pages;
     }
 
     @PostMapping("/customer")

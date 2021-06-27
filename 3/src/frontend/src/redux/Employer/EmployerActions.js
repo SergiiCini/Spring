@@ -50,7 +50,7 @@ export const addCustomerEmployerActions = (id, customerEmployerData) => dispatch
         })
 }
 
-export const removeEmployerActions = (id) => dispatch => {
+export const removeEmployerActions = (id, customersAmount) => dispatch => {
     return fetch("/api/employer/" + id, {
         method: "DELETE",
     })
@@ -66,5 +66,5 @@ export const removeEmployerActions = (id) => dispatch => {
                 payload: employersList
             })
         })
-        .then(() => dispatch(getCustomersAction()))
+        .then(() => dispatch(getCustomersAction(0 ,customersAmount)))
 }

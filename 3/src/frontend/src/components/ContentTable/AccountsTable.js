@@ -20,6 +20,7 @@ import MoneyIcon from '@material-ui/icons/Money';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {deleteCustomerAccountActions} from "../../redux/Customer/CustomerActions";
 import {toggleModalAction} from "../../redux/ToggleModal/modalActions";
+import {customersNumberSelector} from "../../redux/Customer/CustomerSelectors";
 
 const useStyles = makeStyles({
     table: {
@@ -43,11 +44,12 @@ export default function AccountsTable() {
     const dispatch = useDispatch();
     const curCustomerAccounts = useSelector(customerAccountsSelector)
     const accounts = useSelector(allAccountsSelector)
+    const customersAmount = useSelector(customersNumberSelector);
 
     useEffect
     (() => {
         dispatch(customerAccountsActions(id));
-    }, [dispatch, id, accounts])
+    }, [dispatch, id, accounts, customersAmount])
 
     if (curCustomerAccounts.length <= 0) return <p className={classes.noData}>This customer doesn't have any accounts!</p>
     else if (curCustomerAccounts.length > 0) {
@@ -87,7 +89,7 @@ export default function AccountsTable() {
                 <TableCell align="center">
                     <IconButton aria-label="delete">
                         <DeleteIcon onClick={() => {
-                            dispatch(deleteAccountActions(accId));
+                            dispatch(deleteAccountActions(accId, customersAmount));
                             dispatch(deleteCustomerAccountActions(id, accId))
                         }
                         }/>

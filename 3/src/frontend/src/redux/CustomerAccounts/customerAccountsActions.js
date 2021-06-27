@@ -47,7 +47,7 @@ export const getAllAccounts = () => dispatch => {
         })
 }
 
-export const deleteAccountActions = (id) => dispatch => {
+export const deleteAccountActions = (id, customersAmount) => dispatch => {
     const url = "/api/account/" + id;
     fetch(url, {
         method: "DELETE"
@@ -64,7 +64,7 @@ export const deleteAccountActions = (id) => dispatch => {
                 payload: updatedAccountsList
             })
         })
-        .then(() => dispatch(getCustomersAction()))
+        .then(() => dispatch(getCustomersAction(0, customersAmount)))
 }
 
 export const topUpAccountActions = (transactionData) => dispatch => {
@@ -134,7 +134,7 @@ export const sendMoneyActions = (transactionalData) => dispatch => {
         })
 }
 
-export const openNewAccountActions = (id, currency) => dispatch => {
+export const openNewAccountActions = (id, currency, customersAmount) => dispatch => {
     const url = "/api/customer/" + id + "&" + currency;
     return fetch(url, {
         method: "PUT",
@@ -152,6 +152,6 @@ export const openNewAccountActions = (id, currency) => dispatch => {
             })
         })
         .then(() => dispatch(getAllAccounts()))
-        .then(() => dispatch(getCustomersAction()))
+        .then(() => dispatch(getCustomersAction(0, customersAmount)))
 }
 

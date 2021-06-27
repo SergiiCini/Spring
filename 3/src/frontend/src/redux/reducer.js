@@ -14,6 +14,7 @@ const reducer = combineReducers({
     deleteCustomer: deleteCustomerReducer,
     changeCustomer: changeCustomerDataReducer,
     employersList: employerReducer
+
 })
 
 export default reducer

@@ -9,12 +9,12 @@ import IncorrectDataRoute from "./IncorrectDataRoute";
 import EmployerTable from "../components/ContentTable/EmployerTable";
 
 const AppRoutes = (props) => {
-    const {customers, accounts} = props;
+    const {accounts} = props;
 
     return (
         <Switch>
-            <Route exact path="/" render={() => <CustomersTable customers={customers} accounts={accounts}/>}/>
-            <Route exact path="/customer" render={() => <CustomersTable customers={customers}/>}/>
+            <Route exact path="/" render={() => <CustomersTable accounts={accounts}/>}/>
+            <Route exact path="/customer" render={() => <CustomersTable />}/>
             <Route exact path="/accounts/:id/" render={() => <AccountsTable/>}/>
             <Route exact path="/accounts" render={() => <AllAccountsTable/>}/>
             <Route exact path="/sendmoney" render={() => <SendMoney/>}/>
