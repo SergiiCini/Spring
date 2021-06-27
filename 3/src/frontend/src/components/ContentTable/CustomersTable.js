@@ -209,6 +209,9 @@ export default function CustomersTable(text, reviver) {
                 rowsArray.push(i)
             }
         }
+        if(!rowsArray.includes(customersAmount)) {
+            rowsArray.push(customersAmount)
+        }
         return rowsArray;
     }
 

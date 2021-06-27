@@ -39,9 +39,8 @@ public class CustomerServiceImpl implements CustomerService {
             return new PageImpl<>(pagedResult.getContent(), paging, totalElements);
         }
         else {
-            throw new NoSuchCustomerException("No customers in DB!");
+            return new PageImpl<>(new ArrayList<>());
         }
-//        return (List<Customer>) findAllCustomersRepository.findAll();
     }
 
     @Override

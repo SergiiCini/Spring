@@ -1,5 +1,6 @@
 package com.serhii.dto;
 
+import com.serhii.validation.ValidatePassword;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -21,4 +22,7 @@ public class CustomerDtoReq {
     @Min(value = 18, message = "Age should not be less than 18")
     @Max(value = 150, message = "Age should not be greater than 150")
     private String age;
+
+//    @ValidatePassword
+    private String password;
 }
