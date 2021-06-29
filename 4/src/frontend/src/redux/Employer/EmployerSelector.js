@@ -1,0 +1,1 @@
+export const allEmployersSelector = (store) => store.employersList.employers;
